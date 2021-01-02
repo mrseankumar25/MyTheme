@@ -85,6 +85,7 @@
 <body>
   {% section 'header' %}
   {{ content_for_layout }}
+  {{ template }}
   {% section 'footer' %}
 
   {{ 'vender.js' | asset_url | script_tag }}
