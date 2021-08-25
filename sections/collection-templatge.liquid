@@ -1,0 +1,118 @@
+{%
+    render "banner"
+    bgImage: section.settings.bgImage,
+    bannerHeading: section.settings.bannerHeading,
+    showBanner: section.settings.showBanner,
+    showTitle: section.settings.showTitle,
+    title: collection.title
+%}
+
+<div class="container">
+    {% paginate collection.products by 10 %}
+        <div class="row">
+            {% for product in collection.products %}
+                {% case section.settings.productBox %}
+                    {% when "2" %}
+                        {% assign productBoxSize = 'col-md-6' %}
+                    {% when "3" %}
+                        {% assign productBoxSize = 'col-md-4' %}
+                    {% else %}
+                        {% assign productBoxSize = 'col-md-3' %}
+                {% endcase %}
+
+                <div class="col {{ productBoxSize }} productBox">
+                    <div class="productImgContainer">
+                        <a href="{{ product.url | within: collection }}">
+                            <div class="productImg" style="background-image: url({{ product.featured_image.src | img_url: 'large' }});">
+                                {% unless product.available %}
+                                <strong>Sold out</strong>
+                                {% endunless %}
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="productContentContainer">
+                        <div class="productTitle">
+                            <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+                        </div>
+                    </div>
+
+                    <div class="productPrice">
+                        {% assign rPrice = product.price %}
+                        {% assign cPrice = product.compare_at_price %}
+
+                        {% if rPrice != cPrice %}
+                            {% capture price %}
+                                <span class="rPrice">{{ rPrice | money }}</span>
+                                <span class="cPrice">{{ cPrice | money }}</span>
+                            {% endcapture %}
+                        {% else %}
+                            {% capture price %}
+                                <span class="rPrice">{{ rPrice | money }}</span>
+                            {% endcapture %}
+                        {% endif %}
+
+                        {{ price }}
+                    </div>
+                </div>
+            {% else %}
+                <p>Opps! Looks like we don't have any product. :(</p>
+            {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+            <div class="paginationContainer">
+                {{ paginate | default_pagination }}
+            </div>
+        {% endif %}
+    {% endpaginate %}
+</div>
+
+{% schema %}
+{
+    "name": "Collection Section",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "showBanner",
+            "label": "Show Banner",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "showTitle",
+            "label": "Show Title",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "bgImage",
+            "label": "Banner Image"
+        },
+        {
+            "id": "bannerHeading",
+            "label": "Banner Heading",
+            "type": "text"
+        },
+        {
+            "type": "select",
+            "id": "productBox",
+            "label": "Items in row",
+            "options": [
+                {
+                    "value": "2",
+                    "label": "2"
+                },
+                {
+                    "value": "3",
+                    "label": "3"
+                },
+                {
+                    "value": "4",
+                    "label": "4"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
