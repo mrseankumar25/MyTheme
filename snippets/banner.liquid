@@ -2,18 +2,17 @@
     <div class="banner overlayer" style="background-image: url({{ bgImage | img_url: 'master' }});">
         <div class="bannerInner">
             <div class="container">
-                {% if showTitle %}
-                    <h1>{{ title }}</h1>
+                {% if bannerHeading != blank %}
+                    <h1>{{ bannerHeading }}</h1>
                 {% else %}
-                    {% if bannerHeading != blank %}
-                        <h1>{{ bannerHeading }}</h1>
+                    {% if showTitle %}
+                        <h1>{{ title }}</h1>
                     {% endif %}
                 {% endif %}
             </div>
         </div>
     </div>
 {% endif %}
-        
 {% if showBanner != true and showTitle %}
     <h1>{{ title }}</h1>
 {% endif %}
