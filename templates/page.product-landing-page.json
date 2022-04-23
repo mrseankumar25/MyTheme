@@ -1,0 +1,88 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-banner",
+      "settings": {
+        "heading": "The headphones of the future.",
+        "content": "<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit officiis quo id totam soluta alias, adipisci quis natus saepe laudantium ut beatae, deserunt neque error! Sint molestias earum nihil totam!<\/p>",
+        "product": "chain-bracelet",
+        "bannerImage": "shopify:\/\/shop_images\/showcase.jpg",
+        "enable": true
+      }
+    },
+    "16357070022418da5c": {
+      "type": "landing-about",
+      "settings": {
+        "bgImage": "shopify:\/\/shop_images\/section-b.jpg",
+        "heading": "People Aren't Hearing All the Music",
+        "subheading": "Loud & Clearc",
+        "content": "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, officiis!<\/p>"
+      }
+    },
+    "16357075711c79b553": {
+      "type": "landing-gallery",
+      "blocks": {
+        "16357075711c79b553-0": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/gal2323.jpg"
+          }
+        },
+        "16357075711c79b553-1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/gal39834.jpg"
+          }
+        },
+        "16357075711c79b553-2": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/gal43884.jpg"
+          }
+        },
+        "16357075711c79b553-3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/section-b.jpg"
+          }
+        },
+        "16357075711c79b553-4": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/gal4545.jpg"
+          }
+        },
+        "16357075711c79b553-5": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/gal74744.jpg"
+          }
+        },
+        "16357075711c79b553-6": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/gal74744.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "16357075711c79b553-0",
+        "16357075711c79b553-1",
+        "16357075711c79b553-2",
+        "16357075711c79b553-3",
+        "16357075711c79b553-4",
+        "16357075711c79b553-5",
+        "16357075711c79b553-6"
+      ],
+      "settings": {
+        "heading": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "16357070022418da5c",
+    "16357075711c79b553"
+  ],
+  "layout": "theme-landing"
+}

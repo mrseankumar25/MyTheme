@@ -1,0 +1,39 @@
+<section class="different overlayer sectionPad" style="background-image: url({{ section.settings.bgImage | img_url: 'master' }});">
+    <div class="container">
+        <div class="tableContainer">
+            <div class="tableInner">
+                {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+                {% if section.settings.content != blank %}{{ section.settings.content }}{% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": "Image With Content",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "bgImage",
+            "label": "Background Image"
+        },
+        {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading"
+        },
+        {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+        }
+    ],
+    "presets": [
+        {
+            "category": "Banner",
+            "name": "Image With Content"
+        }
+    ]
+}
+{% endschema %}

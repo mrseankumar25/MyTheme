@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="aboutWrapper">
+    {% if section.settings.subheading != blank %}<h3>{{ section.settings.subheading }}</h3>{% endif %}
+    {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+    {% if section.settings.content != blank %}{{ section.settings.content }}{% endif %}
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background-image: url('{{ section.settings.bgImage | img_url: "master" }}');
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Landing Page About",
+  "class": "aboutSection",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bgImage",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "People Aren't Hearing All the Music"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub-Heading",
+      "default": "Loud & Clearc"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, officiis!</p>"
+    }
+  ],
+  "presets": [
+    {
+      "category": "Content",
+      "name": "Landing Page About"
+    }
+  ]
+}
+{% endschema %}

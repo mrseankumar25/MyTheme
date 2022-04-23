@@ -1,0 +1,26 @@
+jQuery(document).ready(function($) {
+    jQuery('ol').each(function() {
+        let thead = '';
+        let tbody = '';
+        jQuery(this).find('li').each(function(i, el) {
+            if(i == 0) {
+                let tr = '';
+                let data = jQuery(el).text().split('|');
+                data.forEach(th => {
+                   tr += `<th>${th}</th>`;
+                });
+                thead = `<thead><tr>${tr}</tr></thead>`;
+            } else {
+                let tr = '';
+                let data = jQuery(el).text().split('|');
+                data.forEach(th => {
+                   tr += `<td>${th}</td>`;
+                });
+                tbody += `<tr>${tr}</tr>`;
+            }
+        });
+
+        jQuery(this).after(`<table>${thead}<tbody>${tbody}</tbody></table>`);
+        jQuery(this).remove();
+    });
+});

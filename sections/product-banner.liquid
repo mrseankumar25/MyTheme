@@ -1,0 +1,61 @@
+{% assign product = all_products[section.settings.product] %}
+<div class="container">
+  <div class="productBannerInner">
+    <div>
+      {% if section.settings.heading != blank %}<h1>{{ section.settings.heading }}</h1>{% endif %}
+      {% if section.settings.content != blank %}{{ section.settings.content }}{% endif %}
+      
+      {% form 'product', product, novalidate: 'novalidate', class: 'addToCartForm', data-ajax: section.settings.enable %}
+        <input type="hidden" name="quantity" value="1">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button class="btn" type="submit">Add To Cart</button>
+        <a class="btn" href="{{ product.url }}" target="_blank">Read More</a>
+      {% endform %}
+    </div>
+    <div>
+      <img src="{{ section.settings.bannerImage | img_url: "master" }}" alt="" loading="lazy" width="{{ section.settings.bannerImage.width }}" height="{{ section.settings.bannerImage.height }}" />
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Labding Page Banner",
+  "class": "productBanner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The headphones of the future."
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "bannerImage",
+      "label": "Banner Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "Enable Ajax Cart",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "category": "Banner",
+      "name": "Labding Page Banner"
+    }
+  ]
+}
+{% endschema %}

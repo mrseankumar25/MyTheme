@@ -1,0 +1,64 @@
+@font-face {font-family: 'Poppins';src: url('./poppins-bold.eot');src: url('./#iefix') format('embedded-opentype'),url('./poppins-bold.woff2') format('woff2'),url('./poppins-bold.woff') format('woff'),url('./poppins-bold.ttf') format('truetype'),url('./poppins-bold.svg#Poppins-Bold') format('svg');font-weight: bold;font-style: normal;font-display: swap;}
+@font-face {font-family: 'Poppins';src: url('./poppins-black.eot');src: url('./poppins-black.eot?#iefix') format('embedded-opentype'),url('./poppins-black.woff2') format('woff2'),url('./poppins-black.woff') format('woff'),url('./poppins-black.ttf') format('truetype'),url('./poppins-black.svg#Poppins-Black') format('svg');font-weight: 900;font-style: normal;font-display: swap;}
+@font-face {font-family: 'Poppins';src: url('./poppins-light.eot');src: url('./poppins-light.eot?#iefix') format('embedded-opentype'),url('./poppins-light.woff2') format('woff2'),url('./poppins-light.woff') format('woff'),url('./poppins-light.ttf') format('truetype'),url('./poppins-light.svg#Poppins-Light') format('svg');font-weight: 300;font-style: normal;font-display: swap;}
+@font-face {font-family: 'Poppins';src: url('./poppins-extralight.eot');src: url('./poppins-extralight.eot?#iefix') format('embedded-opentype'),url('./poppins-extralight.woff2') format('woff2'),url('./poppins-extralight.woff') format('woff'),url('./poppins-extralight.ttf') format('truetype'),url('./poppins-extralight.svg#Poppins-ExtraLight') format('svg');font-weight: 200;font-style: normal;font-display: swap;}
+@font-face {font-family: 'Poppins';src: url('./poppins-extrabold.eot');src: url('./poppins-extrabold.eot?#iefix') format('embedded-opentype'),url('./poppins-extrabold.woff2') format('woff2'),url('./poppins-extrabold.woff') format('woff'),url('./poppins-extrabold.ttf') format('truetype'),url('./poppins-extrabold.svg#Poppins-ExtraBold') format('svg');font-weight: bold;font-style: normal;font-display: swap;}
+@font-face {font-family: 'Poppins';src: url('./poppins-regular.eot');src: url('./poppins-regular.eot?#iefix') format('embedded-opentype'),url('./poppins-regular.woff2') format('woff2'),url('./poppins-regular.woff') format('woff'),url('./poppins-regular.ttf') format('truetype'),url('./poppins-regular.svg#Poppins-Regular') format('svg');font-weight: normal;font-style: normal;font-display: swap;}
+@font-face {font-family: 'Poppins';src: url('./poppins-medium.eot');src: url('./poppins-medium.eot?#iefix') format('embedded-opentype'),url('./poppins-medium.woff2') format('woff2'),url('./poppins-medium.woff') format('woff'),url('./poppins-medium.ttf') format('truetype'),url('./poppins-medium.svg#Poppins-Medium') format('svg');font-weight: 500;font-style: normal;font-display: swap;}
+@font-face {font-family: 'Poppins';src: url('./poppins-thin.eot');src: url('./poppins-thin.eot?#iefix') format('embedded-opentype'),url('./poppins-thin.woff2') format('woff2'),url('./poppins-thin.woff') format('woff'),url('./poppins-thin.ttf') format('truetype'),url('./poppins-thin.svg#Poppins-Thin') format('svg');font-weight: 100;font-style: normal;font-display: swap;}
+@font-face {font-family: 'Poppins';src: url('./poppins-semibold.eot');src: url('./poppins-semibold.eot?#iefix') format('embedded-opentype'),url('./poppins-semibold.woff2') format('woff2'),url('./poppins-semibold.woff') format('woff'),url('./poppins-semibold.ttf') format('truetype'),url('./poppins-semibold.svg#Poppins-SemiBold') format('svg');font-weight: 600;font-style: normal;font-display: swap;}
+
+:root {--primary-color: #333;--primary-btn-color: #fff;--primary-btn-background: #333;--secondary-color: #444;--secondary-btn-color: #444;--overlay-color: 0, 0, 0;--overlay-text-color: #fff;}
+* {box-sizing: border-box;margin: 0;padding: 0;}
+
+body {color: var(--primary-color);font-family: 'Poppins', sans-serif;font-size: 1.1rem;line-height: 1.6;}
+h1, h2, h3, h4, h5, h6 {line-height: 1.3;}
+a {color: var(--primary-color);text-decoration: none;}
+a:hover {color: var(--secondary-color);}
+img {max-width: 100%;}
+.container {margin: 0 auto;max-width: 1100px;padding: 0 30px;}
+.btn {background-color: var(--primary-btn-background);border: none;border-radius: 2rem;color: var(--primary-btn-color);cursor: pointer;display: inline-block;font-size: 1rem;line-height: 1;margin-top: 0.5rem;padding: 0.8rem 1.5rem;}
+.btn:hover {color: var(--primary-btn-color);}
+.btn + .btn {margin-left: 0.75em;}
+
+/* Product Banner Start */
+.productBannerInner {align-items: center;display: flex;flex-wrap: wrap;justify-content: space-between;margin: 0 -30px;}
+.productBannerInner > * {flex: 1 1 50%;padding: 30px;}
+/* Product Banner End */
+
+/* About Section Start */
+.aboutSection {background-position: center;background-repeat: no-repeat;background-size: cover;color: var(--overlay-text-color);padding: 5rem 0;text-align: center;position: relative;}
+.aboutSection::before {background-color: rgba(var(--overlay-color), .5);content: '';height: 100%;left: 50%;position: absolute;top: 50%;transform: translate(-50%, -50%);width: 100%;z-index: 1;}
+.aboutSection > * {position: relative;z-index: 2;}
+.aboutWrapper {margin: 0 auto;max-width: 50rem;}
+.aboutSection h2 {font-size: 4rem;}
+/* About Section End */
+
+/* Product Gallery Start */
+.productGallery .gallery {display: grid;grid-template-columns: repeat(5, 1fr);}
+.productGallery .gallery a:first-child {grid-column: 1/3;grid-row: 1/3;}
+.productGallery .gallery a:nth-child(2) {grid-column-start: 1/3;grid-row-end: 1/3;}
+.productGallery .gallery a, .productGallery .gallery img {height: 100%;object-fit: cover;width: 100%;}
+/* Product Gallery End */
+
+/* Cart Popup Start */
+.cartPopup {max-width: 20rem;padding: 15px 0;position: fixed;right: 0;top: 0;}
+.cartPopupBody {padding: 15px;}
+.cartPopupItem {display: flex;flex-wrap: wrap;justify-content: space-between;margin: 0 -15px;}
+.cartPopupItem > div {padding: 0 15px;}
+.cartPopupProductImage {width: 30%;}
+.cartPopupProductInfo {width: 70%;}
+.cartPopupProductTitle {font-size: 1.2rem;font-weight: 600;}
+.cartPopupProductPrice {font-size: .75rem;}
+.cartPopupFooter {padding: 0 15px;}
+.cartFooter {border-radius: 0;display: block;margin: 0;text-align: center;width: 100%;}
+
+/* Cart Popup End */
+
+@media only screen and (max-width: 767px) {
+  .productBannerInner > * {flex: 1 1 100%;text-align: center;}
+  .productBannerInner > *:first-child {order: 1;}
+  .productGallery .gallery {grid-template-columns: repeat(3, 1fr);}
+  .productGallery .gallery a:first-child {grid-column: 1/1;grid-row: 1/1;}
+  .productGallery .gallery a:nth-child(2) {grid-column: 2/4;grid-row: 2/2;}
+}

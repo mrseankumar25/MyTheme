@@ -1,0 +1,274 @@
+{%
+    render "banner"
+    bgImage: section.settings.bgImage,
+    bannerHeading: section.settings.bannerHeading,
+    showBanner: section.settings.showBanner,
+    showTitle: section.settings.showTitle,
+    title: collection.title
+%}
+
+<div class="container">
+    {% if section.settings.enableFillters %}
+        <form class="filter-form">
+            {% for filter in collection.filters %}
+                <div class="filterWrapper">
+                    <div class="filter-title">
+                        <span>{{ filter.label }}</span>
+                        {% if filter.active_values.size > 0 %}
+                            <a href="{{ filter.url_to_remove }}" class="filter-group-diplay__header-reset">x</a>
+                        {% endif %}
+                    </div>
+                    {% case filter.type %}
+                        {% when 'price_range' %}
+                            <div class="filer-group-diaplay__price-range">
+                                <div class="filer-group-diaplay__price-range-from">
+                                    <span>{{ cart.currency.symbol }}</span>
+                                    <input type="number" name="{{ filter.min_value.param_name }}" id="{{ filter.min_value.param_name }}" min="0" max="{{ filter.range_max | money_without_currency }}"{% if filter.min_value.value %} value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %} placeholder="0">
+                                </div>
+                                <div class="filer-group-diaplay__price-range-to">
+                                    <span>{{ cart.currency.symbol }}</span>
+                                    <input type="number" name="{{ filter.max_value.param_name }}" id="{{ filter.max_value.param_name }}" min="0" max="{{ filter.range_max | money_without_currency }}"{% if filter.max_value.value %} value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %} placeholder="{{ filter.range_max | money_without_currency }}">
+                                </div>
+                                <input type="submit" value="Apply">
+                            </div>
+                        {% else %}
+                            <ul class="filter-group-display__list">
+                                {% for filter_value in filter.values %}
+                                    <li class="filter-group-display__list-item">
+                                        <input type="checkbox" name="{{ filter_value.param_name }}" id="filter-{{ filter_value.param_name }}-{{ forloop.index }}" value="{{ filter_value.value }}"{% if filter_value.active %} checked{% endif %}{% if filter_value.count == 0 and filter_value.active == false %} disabled{% endif %}>
+                                        <label for="filter-{{ filter_value.param_name }}-{{ forloop.index }}">{{ filter_value.label }}</label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <input type="submit" value="Apply">
+                    {% endcase %}
+                </div>
+            {% endfor %}
+        </form>
+    {% endif %}
+    {% paginate collection.products by 10 %}
+        <div class="row" id="cardContainer">
+            {% for product in collection.products %}
+                {% liquid
+                    case section.settings.productBox
+                        when "2"
+                            assign productBoxSize = 'col-md-6'
+                        when "3"
+                            assign productBoxSize = 'col-md-4'
+                        else
+                            assign productBoxSize = 'col-md-3'
+                    endcase
+                %}
+
+                <div class="col {{ productBoxSize }} productBox">
+                    <div class="productImgContainer">
+                        <a href="{{ product.url | within: collection }}">
+                            <div class="productImg" style="background-image: url({{ product.featured_image.src | img_url: 'large' }});">
+                                {% unless product.available %}
+                                <strong>Sold out</strong>
+                                {% endunless %}
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="productContentContainer">
+                        <div class="productTitle">
+                            <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+                        </div>
+                    </div>
+
+                    <div class="productPrice">
+                        {% assign rPrice = product.price %}
+                        {% assign cPrice = product.compare_at_price %}
+
+                        {% if rPrice != cPrice %}
+                            {% capture price %}
+                                <span class="rPrice">{{ rPrice | money }}</span>
+                                <span class="cPrice">{{ cPrice | money }}</span>
+                            {% endcapture %}
+                        {% else %}
+                            {% capture price %}
+                                <span class="rPrice">{{ rPrice | money }}</span>
+                            {% endcapture %}
+                        {% endif %}
+
+                        {{ price }}
+                    </div>
+
+                    <div class="productForm">
+                        {% form "product", product, class: "addToCartForm", data-ajax: section.settings.enableAjaxCart %}
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                            <button class="siteBtn black-btn" type="submit">Add To Cart</button>
+                        {% endform %}
+                    </div>
+                </div>
+            {% else %}
+                <p>Opps! Looks like we don't have any product. :(</p>
+            {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+            <div class="paginationContainer"{% if section.settings.paginateType == 'infinity' %} style="height: 0;overflow: hidden;"{% endif %}>
+                <input type="hidden" value="{{ paginate.pages }}">
+                {% if section.settings.paginateType == 'infinity' or section.settings.paginateType == 'loadMore' %}
+                    <span data-current="2" class="page loadMoreButton">Load More</span>
+                {% else %}
+                    {{ paginate | default_pagination }}
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endpaginate %}
+</div>
+
+{% schema %}
+{
+    "name": "Collection Section",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "showBanner",
+            "label": "Show Banner",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "enableAddToCart",
+            "label": "Enable Add To Cart",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "enableAjaxCart",
+            "label": "Enable Ajax Cart",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "showTitle",
+            "label": "Show Title",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "bgImage",
+            "label": "Banner Image"
+        },
+        {
+            "id": "bannerHeading",
+            "label": "Banner Heading",
+            "type": "text"
+        },
+        {
+            "type": "checkbox",
+            "id": "enableFillters",
+            "label": "Enable Filters",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "productBox",
+            "label": "Items in row",
+            "options": [
+                {
+                    "value": "2",
+                    "label": "2"
+                },
+                {
+                    "value": "3",
+                    "label": "3"
+                },
+                {
+                    "value": "4",
+                    "label": "4"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "paginateType",
+            "label": "Paginate Type",
+            "options": [
+                {
+                    "value": "paginate",
+                    "label": "Paginate"
+                },
+                {
+                    "value": "loadMore",
+                    "label": "Load More"
+                },
+                {
+                    "value": "infinity",
+                    "label": "Infinity"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+
+{% stylesheet %}
+form.filter-form {
+    display: grid;
+    gap: 30px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-content: space-between;
+}
+label {
+    position: relative;
+}
+input:disabled + label {
+    opacity: .5;
+}
+label::before {
+    border: 1px solid currentColor;
+    content: '';
+    display: inline-block;
+    height: 0.5em;
+    margin: 0 0.25em 0 0;
+    vertical-align: middle;
+    width: 0.5em;
+}
+input:checked + label::before {
+    background-color: currentColor
+}
+{% endstylesheet %}
+
+{% if section.settings.paginateType == 'infinity' or section.settings.paginateType == 'loadMore' %}
+    <script type="text/javascript">
+        const loadMoreButton = document.querySelector('.loadMoreButton')
+        if(loadMoreButton) {
+            loadMoreButton.addEventListener('click', async function() {
+                if(this.classList.contains('disbled') || this.classList.contains('loadingContent')) return;
+
+                this.classList.add('loadingContent');
+
+                const pages = parseInt(this.closest('.paginationContainer').querySelector('input').value);
+                const current = parseInt(this.dataset.current);
+                const req = await fetch(`{{ request.path }}?page=${ current }`);
+                const res = await req.text();
+
+                const resText = new DOMParser();
+                const Doc = resText.parseFromString(res, 'text/html');
+                document.getElementById('cardContainer').innerHTML = document.getElementById('cardContainer').innerHTML + Doc.getElementById('cardContainer').innerHTML
+
+                this.classList.remove('loadingContent');
+
+                if(pages == current) {
+                    this.style.display = 'none';
+                    this.classList.add('disbled');
+                } else {
+                    this.dataset.current = current + 1;
+                }
+            })
+        }
+
+        {% if section.settings.paginateType == 'infinity' %}
+            window.addEventListener('scroll', function() {
+                if((window.innerHeight + window.scrollY) > loadMoreButton.offsetTop) {
+                    loadMoreButton.click();
+                };
+            })
+        {% endif %}
+    </script>
+{% endif %}

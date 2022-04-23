@@ -1,0 +1,114 @@
+window.theme = window.theme || {};
+
+theme.formatCurrency = (cents, format) => {
+  if (typeof cents == 'string') { cents = cents.replace('.',''); }
+  var value = '';
+  var placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+  var formatString = (format || this.money_format);
+
+  function defaultOption(opt, def) {
+     return (typeof opt == 'undefined' ? def : opt);
+  }
+
+  function formatWithDelimiters(number, precision, thousands, decimal) {
+    precision = defaultOption(precision, 2);
+    thousands = defaultOption(thousands, ',');
+    decimal   = defaultOption(decimal, '.');
+
+    if (isNaN(number) || number == null) { return 0; }
+
+    number = (number/100.0).toFixed(precision);
+
+    var parts   = number.split('.'),
+        dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+        cents   = parts[1] ? (decimal + parts[1]) : '';
+
+    return dollars + cents;
+  }
+
+  switch(formatString.match(placeholderRegex)[1]) {
+    case 'amount':
+      value = formatWithDelimiters(cents, 2);
+      break;
+    case 'amount_no_decimals':
+      value = formatWithDelimiters(cents, 0);
+      break;
+    case 'amount_with_comma_separator':
+      value = formatWithDelimiters(cents, 2, '.', ',');
+      break;
+    case 'amount_no_decimals_with_comma_separator':
+      value = formatWithDelimiters(cents, 0, '.', ',');
+      break;
+  }
+
+  return formatString.replace(placeholderRegex, value);
+};
+
+theme.getCart = async () => {
+  const req = await fetch('/cart.json', {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json"
+    }
+  })
+
+  const { items } = await req.json();
+  
+  const cartItems = `<div class="cartPopupItem">
+    <div class="cartPopupProductImage"><img src="${ items[0].featured_image.url }" loading="lazy" width="" height=""></div>
+    <div class="cartPopupProductInfo">
+      <div class="cartPopupProductTitle">${ items[0].title }</div>
+      <div class="cartPopupProductPrice">${ items[0].quantity } x ${ theme.formatCurrency(items[0].price, theme.moneyFormat) }</div>
+    </div>
+  </div>`
+  const cartPopup = `<div class="cartPopup">
+    <div class="cartPopupBody">${ cartItems }</div>
+    <div class="cartPopupFooter">
+      <a href="{{ routes.cart_url }}" class="btn cartFooter">View Cart</a>
+    </div>
+  </div>`;
+
+  jQuery('body').prepend(cartPopup);
+  
+  setTimeout(function() {
+    jQuery(document).find('.cartPopup').remove();
+  }, 3000);
+}
+
+theme.addToCart = async (items) => {
+  const req = await fetch('/cart/add.json', {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify(items)
+  })
+  const res = await req.json();
+  theme.getCart();
+}
+
+jQuery(document).ready(function($) {
+  let gallery = $('.gallery a').simpleLightbox();
+
+  jQuery('.addToCartForm').on('submit', (e) => {
+    const form = jQuery(e.target);
+    const ajaxEnabled = form.data('ajax') || false;
+
+    if(ajaxEnabled == true) {
+      e.preventDefault();
+      const id = form.find('input[name="id"]').val();
+      const formData = {
+        'items': [
+          {
+            "id": id,
+            "quantity": 1
+          }
+        ]
+      }
+
+      theme.addToCart(formData)
+    } else {
+      jQuery(e.target).submit();
+    }
+  })
+});

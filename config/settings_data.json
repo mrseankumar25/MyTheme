@@ -1,0 +1,480 @@
+{
+  "current": {
+    "color_text": "#3d4246",
+    "color_body_text": "#69727b",
+    "color_sale_text": "#557B97",
+    "color_button": "#557B97",
+    "color_button_text": "#fff",
+    "color_small_button_text_border": "#3d4246",
+    "color_text_field_text": "#000",
+    "color_text_field_border": "#949494",
+    "color_text_field": "#fff",
+    "color_image_overlay_text": "#fff",
+    "color_image_overlay": "#3d4246",
+    "image_overlay_opacity": 40,
+    "color_borders": "#e8e9eb",
+    "color_body_bg": "#fff",
+    "type_header_font": "work_sans_n6",
+    "type_header_base_size": 26,
+    "type_base_font": "work_sans_n4",
+    "type_base_size": 16,
+    "share_facebook": true,
+    "share_twitter": true,
+    "share_pinterest": true,
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "logoImg": "shopify:\/\/shop_images\/logo_1e84312a-9706-452a-ab0b-27a6300f2067.png",
+          "logoAlt": "shopify:\/\/shop_images\/logo-alt_6a6c3aba-65ac-4e09-98f7-23534bbf4f6b.png",
+          "main_menu": "main-menu"
+        }
+      },
+      "slideshow": {
+        "type": "slideshow",
+        "blocks": {
+          "slideshow-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/laptop-from-above.jpg",
+              "alignment": "center center",
+              "slide_title": "Image slide",
+              "subheading": "Tell your brand's story through images",
+              "button_label": "",
+              "button_link": ""
+            }
+          },
+          "slideshow-1": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/message.jpg",
+              "alignment": "center center",
+              "slide_title": "Image slide",
+              "subheading": "Tell your brand's story through images",
+              "button_label": "",
+              "button_link": ""
+            }
+          }
+        },
+        "block_order": [
+          "slideshow-0",
+          "slideshow-1"
+        ],
+        "settings": {
+          "slideshow_height": "adapt",
+          "text_size": "medium",
+          "text_alignment": "center center",
+          "show_overlay": true,
+          "autorotate": false,
+          "autorotate_speed": 5
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "4aa72477-7ab9-40ef-9892-d37212787431": {
+            "type": "contactInfo",
+            "settings": {
+              "infoIcon": "phone",
+              "infoContent": "xxxxxxxxxx"
+            }
+          },
+          "ddbe7fe5-fc91-48ce-83dc-ce24a307d033": {
+            "type": "contactInfo",
+            "settings": {
+              "infoIcon": "at",
+              "infoContent": "test@test.com"
+            }
+          },
+          "dd0f9a6f-6e58-4c84-877e-70dfedafd848": {
+            "type": "contactInfo",
+            "settings": {
+              "infoIcon": "marker",
+              "infoContent": "Lorem ipsum dolor sit amet."
+            }
+          }
+        },
+        "block_order": [
+          "4aa72477-7ab9-40ef-9892-d37212787431",
+          "ddbe7fe5-fc91-48ce-83dc-ce24a307d033",
+          "dd0f9a6f-6e58-4c84-877e-70dfedafd848"
+        ],
+        "settings": {
+          "aboutHeading": "About Us",
+          "aboutContent": "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima laborum quo similique maiores repellendus eligendi quae! Repellendus eum amet enim.<\/p>",
+          "contactHeading": "Contact Us"
+        }
+      },
+      "1625414158793ef3ae": {
+        "type": "banner",
+        "settings": {
+          "bannerImage": "shopify:\/\/shop_images\/laptop-from-above.jpg",
+          "bannerHeading": "<p>The doubt about how advice is currently done sales \/ commissions \/ products and lack of independence.Shine a light, make it simple.<\/p>",
+          "bannerLink": "#",
+          "bannerLinkContent": "Apply Here"
+        }
+      },
+      "162541422446b63fa8": {
+        "type": "partner",
+        "blocks": {
+          "d183b7b0-2091-4363-ae8c-18e342d36655": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "98452d68-47a3-433d-ba0d-ef68bdfeec70": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "593ed98f-f2ca-421d-b26f-29c5fc0aef94": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "9610278e-0a70-40aa-850e-32bd60f03473": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "f06356a2-6e22-47d0-94b2-bd4b784d3c0a": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          }
+        },
+        "block_order": [
+          "d183b7b0-2091-4363-ae8c-18e342d36655",
+          "98452d68-47a3-433d-ba0d-ef68bdfeec70",
+          "593ed98f-f2ca-421d-b26f-29c5fc0aef94",
+          "9610278e-0a70-40aa-850e-32bd60f03473",
+          "f06356a2-6e22-47d0-94b2-bd4b784d3c0a"
+        ],
+        "settings": {
+          "partnerHeading": ""
+        }
+      },
+      "162541433244f2afd8": {
+        "type": "testimonial",
+        "blocks": {
+          "6ebb62a0-d5f3-45ed-9594-1d3149661ae1": {
+            "type": "testimonials",
+            "settings": {
+              "cilentImage": "shopify:\/\/shop_images\/stylish-man-in-bow-tie.jpg",
+              "content": "<p>Sam’s background is a little different from the average financial adviser… He left school at 16 to pursue a professional football career. He retired at 26 deciding it was time to get married, start a family and pursue a new vocation.<\/p>",
+              "name": "Sam Sloma"
+            }
+          },
+          "ce569a98-d65c-40c4-978e-b2911042bdb5": {
+            "type": "testimonials",
+            "settings": {
+              "cilentImage": "shopify:\/\/shop_images\/stylish-man-in-bow-tie.jpg",
+              "content": "<p>Sam’s background is a little different from the average financial adviser… He left school at 16 to pursue a professional football career. He retired at 26 deciding it was time to get married, start a family and pursue a new vocation.<\/p>",
+              "name": "Sam Sloma"
+            }
+          }
+        },
+        "block_order": [
+          "6ebb62a0-d5f3-45ed-9594-1d3149661ae1",
+          "ce569a98-d65c-40c4-978e-b2911042bdb5"
+        ],
+        "settings": {
+          "cilentHeading": ""
+        }
+      },
+      "1625414402b8c59a87": {
+        "type": "image-with-content",
+        "settings": {
+          "bgImage": "shopify:\/\/shop_images\/different.jpg",
+          "heading": "HOW WE ARE DIFFERENT",
+          "content": "<p><strong>Lorem Ipsum <\/strong>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum<\/p>"
+        }
+      },
+      "1625414526bf478a7d": {
+        "type": "image-with-content-and-link",
+        "settings": {
+          "bgImage": "shopify:\/\/shop_images\/message.jpg",
+          "heading": "The standard Lorem Ipsum passage, used since the 1500s",
+          "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<\/p>",
+          "link": "",
+          "linkLabel": "Apply Here",
+          "align": "left"
+        }
+      },
+      "collection-templatge": {
+        "type": "collection-templatge",
+        "settings": {
+          "showBanner": true,
+          "enableAddToCart": true,
+          "enableAjaxCart": true,
+          "showTitle": true,
+          "bgImage": "shopify:\/\/shop_images\/laptop-from-above.jpg",
+          "bannerHeading": "",
+          "enableFillters": true,
+          "productBox": "4",
+          "paginateType": "infinity"
+        }
+      },
+      "product-template": {
+        "type": "product-template",
+        "settings": {
+          "galleryType": "slider",
+          "qtyCheck": false,
+          "dyamincButtons": false
+        }
+      }
+    },
+    "content_for_index": [
+      "1625414158793ef3ae",
+      "162541422446b63fa8",
+      "162541433244f2afd8",
+      "1625414402b8c59a87",
+      "1625414526bf478a7d"
+    ]
+  },
+  "presets": {
+    "Default": {
+      "color_text": "#3d4246",
+      "color_body_text": "#69727b",
+      "color_sale_text": "#557B97",
+      "color_borders": "#e8e9eb",
+      "color_button": "#557B97",
+      "color_button_text": "#fff",
+      "color_small_button_text_border": "#3d4246",
+      "color_text_field": "#fff",
+      "color_text_field_text": "#000",
+      "color_text_field_border": "#949494",
+      "color_image_overlay_text": "#fff",
+      "color_image_overlay": "#3d4246",
+      "image_overlay_opacity": 40,
+      "color_body_bg": "#fff",
+      "type_header_font": "work_sans_n6",
+      "type_header_base_size": 26,
+      "type_base_font": "work_sans_n4",
+      "type_base_size": 16,
+      "share_facebook": true,
+      "share_twitter": true,
+      "share_pinterest": true,
+      "sections": {
+        "header": {
+          "type": "header",
+          "settings": {
+          }
+        },
+        "slideshow": {
+          "type": "slideshow",
+          "blocks": {
+            "slideshow-0": {
+              "type": "image",
+              "settings": {
+              }
+            },
+            "slideshow-1": {
+              "type": "image",
+              "settings": {
+              }
+            }
+          },
+          "block_order": [
+            "slideshow-0",
+            "slideshow-1"
+          ],
+          "settings": {
+          }
+        },
+        "featured-collections": {
+          "type": "collection",
+          "settings": {
+            "collection": "frontpage"
+          }
+        }
+      },
+      "content_for_index": [
+        "featured-collections",
+        "slideshow"
+      ]
+    },
+    "Light": {
+      "color_text": "#162950",
+      "color_body_text": "#6d6d6d",
+      "color_sale_text": "#DA2F0C",
+      "color_borders": "#e4e4e4",
+      "color_button": "#DA2F0C",
+      "color_button_text": "#ffffff",
+      "color_small_button_text_border": "#162950",
+      "color_text_field": "#ffffff",
+      "color_text_field_text": "#162950",
+      "color_text_field_border": "#909090",
+      "color_image_overlay_text": "#ffffff",
+      "color_image_overlay": "#3d3d3d",
+      "image_overlay_opacity": 40,
+      "color_body_bg": "#f8f8f8",
+      "type_header_font": "muli_n6",
+      "type_header_base_size": 26,
+      "type_base_font": "muli_n4",
+      "type_base_size": 18,
+      "share_facebook": true,
+      "share_twitter": true,
+      "share_pinterest": true,
+      "social_twitter_link": "",
+      "social_facebook_link": "",
+      "social_pinterest_link": "",
+      "social_instagram_link": "",
+      "social_tumblr_link": "",
+      "social_snapchat_link": "",
+      "social_youtube_link": "",
+      "social_vimeo_link": "",
+      "favicon": "",
+      "checkout_header_image": "",
+      "checkout_logo_image": "",
+      "checkout_logo_position": "left",
+      "checkout_logo_size": "small",
+      "checkout_body_background_image": "",
+      "checkout_body_background_color": "#ffffff",
+      "checkout_input_background_color_mode": "white",
+      "checkout_sidebar_background_image": "",
+      "checkout_sidebar_background_color": "#e8f3f6",
+      "checkout_heading_font": "Roboto",
+      "checkout_body_font": "Source Sans Pro",
+      "checkout_accent_color": "#1990c6",
+      "checkout_button_color": "#23314e",
+      "checkout_error_color": "#ff6d6d",
+      "sections": {
+        "header": {
+          "type": "header",
+          "settings": {
+          }
+        },
+        "slideshow": {
+          "type": "slideshow",
+          "blocks": {
+            "slideshow-0": {
+              "type": "image",
+              "settings": {
+                "image": "",
+                "alignment": "center center"
+              }
+            },
+            "1492095993817": {
+              "type": "image",
+              "settings": {
+                "image": "",
+                "alignment": "center"
+              }
+            }
+          },
+          "block_order": [
+            "slideshow-0",
+            "1492095993817"
+          ],
+          "settings": {
+            "slideshow_height": "medium",
+            "text_size": "medium",
+            "autorotate": false,
+            "autorotate_speed": 5
+          }
+        },
+        "featured-collections": {
+          "type": "collection",
+          "settings": {
+            "grid": 3,
+            "rows": 1,
+            "show_vendor": true,
+            "show_view_all": true
+          }
+        },
+        "product-template": {
+          "type": "product-template",
+          "settings": {
+          }
+        },
+        "collection-template": {
+          "type": "collection-template",
+          "settings": {
+            "layout": "grid",
+            "grid": 2,
+            "rows": 2,
+            "show_collection_image": true,
+            "show_vendor": false,
+            "sort_enable": true,
+            "tags_enable": true
+          }
+        },
+        "1492033877875": {
+          "type": "quotes",
+          "blocks": {
+            "1492033877875-0": {
+              "type": "quote",
+              "settings": {
+              }
+            }
+          },
+          "block_order": [
+            "1492033877875-0"
+          ],
+          "settings": {
+          }
+        },
+        "1492033924902": {
+          "type": "custom-content",
+          "blocks": {
+            "1492033924902-0": {
+              "type": "text",
+              "settings": {
+                "width": "100%",
+                "alignment": "center",
+                "align_text": "center"
+              }
+            }
+          },
+          "block_order": [
+            "1492033924902-0"
+          ],
+          "settings": {
+            "title": ""
+          }
+        },
+        "1492096252560": {
+          "type": "collection-list",
+          "blocks": {
+            "1492096252560-0": {
+              "type": "featured_collection",
+              "settings": {
+              }
+            },
+            "1492096252560-1": {
+              "type": "featured_collection",
+              "settings": {
+              }
+            },
+            "1492096252560-2": {
+              "type": "featured_collection",
+              "settings": {
+              }
+            }
+          },
+          "block_order": [
+            "1492096252560-0",
+            "1492096252560-1",
+            "1492096252560-2"
+          ],
+          "settings": {
+            "grid": 3
+          }
+        }
+      },
+      "content_for_index": [
+        "featured-collections",
+        "slideshow",
+        "1492033924902",
+        "1492096252560",
+        "1492033877875"
+      ]
+    }
+  }
+}

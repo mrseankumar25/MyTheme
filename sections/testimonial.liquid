@@ -1,0 +1,71 @@
+<div class="container">
+    {% if section.settings.cilentHeading != blank %}<h2>{{ section.settings.cilentHeading }}</h2>{% endif %}
+
+    {% assign blockSize = section.blocks | size %}
+    {% if blockSize > 0 %}
+    <div class="row conCenter">
+        <div class="col-md-10">
+            <div id="testimonialContainer" class="owl-carousel owl-theme">
+                {% for block in section.blocks %}
+                <div class="item">
+                    <div class="testimonialWrapper">
+                        <figure style="background-image: url({{ block.settings.cilentImage | img_url: 'master' }});"></figure>
+
+                        <div class="testimonialContent">
+                            {{ block.settings.content }}
+                        </div>
+
+                        <div class="testimonialAuther"><h3>{{ block.settings.name }}</h3></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Testimonial",
+    "class": "testimonials sectionPad center",
+    "tag": "section",
+    "settings": [
+        {
+            "type": "text",
+            "id": "cilentHeading",
+            "label": "Cilent Heading"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "testimonials",
+            "name": "Testimonial",
+            "limit": 5,
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "cilentImage",
+                    "label": "Cilent Image"
+                },
+                {
+                    "type": "richtext",
+                    "id": "content",
+                    "label": "Content"
+                },
+                {
+                    "type": "text",
+                    "id": "name",
+                    "label": "Name"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "category": "Cilents",
+            "name": "Testimonial's Section"
+        }
+    ]
+}
+{% endschema %}

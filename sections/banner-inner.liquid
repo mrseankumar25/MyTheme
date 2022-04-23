@@ -1,0 +1,42 @@
+{%
+  render "banner" bgImage: section.settings.bgImage,
+  bannerHeading: section.settings.bannerHeading,
+  showBanner: section.settings.showBanner,
+  showTitle: section.settings.showTitle,
+  title: section.settings.title
+%}
+
+{% schema %}
+{
+  "name": "Page Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "showBanner",
+      "label": "Show Banner",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "showTitle",
+      "label": "Show Title",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "bgImage",
+      "label": "Banner Image"
+    },
+    {
+      "id": "title",
+      "label": "Banner Title",
+      "type": "text"
+    },
+    {
+      "id": "bannerHeading",
+      "label": "Banner Heading",
+      "type": "text"
+    }
+  ]
+}
+{% endschema %}

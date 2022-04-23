@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "banner": {
+      "type": "banner-inner",
+      "settings": {
+        "showBanner": true,
+        "showTitle": true,
+        "bgImage": "shopify:\/\/shop_images\/different.jpg",
+        "title": "Cart Page",
+        "bannerHeading": ""
+      }
+    },
+    "cart": {
+      "type": "cart-template",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "cart"
+  ]
+}
