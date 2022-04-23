@@ -1,0 +1,111 @@
+{%
+    render "banner"
+    bgImage: section.settings.bgImage,
+    bannerHeading: section.settings.bannerHeading,
+    title: collection.title,
+    showBanner: section.settings.showBanner,
+    showTitle: section.settings.showTitle,
+%}
+
+<div class="container">
+    {% paginate collection.products by 6 %}
+        <div class="row">
+            {% for product in collection.products %}
+                {% case section.settings.selectSize %}
+                    {% when "2" %}
+                        {% assign boxSize = 'col-md-6' %}
+                    {% when "3" %}
+                        {% assign boxSize = 'col-md-4' %}
+                    {% else %}
+                        {% assign boxSize = 'col-md-3' %}
+                {% endcase %}
+                <div class="col-12 {{ boxSize }} productBox">
+                    <div class="productImgContainer">
+                        <a href="{{ product.url | within: collection }}">
+                            <div class="productImg" style="background-image: url({{ product.featured_image.src | img_url: 'large' }});" title="{{ product.featured_image.alt | escape }}">
+                                {% unless product.available %}<strong>sold out</strong>{% endunless %}
+                            </div>
+                        </a>
+                    </div>
+                    <div class="productContentContainer">
+                        <div class="productTitle">
+                            <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+                        </div>
+                        <div class="productPrice">
+                            {% assign rprice = product.price %}
+                            {% assign cprice = product.compare_at_price %}
+                            {% if rprice != cprice %}
+                                {% assign price = product.price %}
+                                {% capture price %}
+                                    <span class="rPrice">{{ product.price | money }}</span>
+                                    <span class="cPrice">{{ product.compare_at_price | money }}</span>
+                                {% endcapture %}
+                            {% else %}
+                                {% capture price %}
+                                    <span class="rPrice">{{ product.price | money }}</span>
+                                {% endcapture %}
+                            {% endif %}
+                            {{ price }}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>Oppes! Looks like we don't have what your looking for. :(</p>
+            {% endfor %}
+        </div>
+        {% if paginate.pages > 1 %}
+            <div class="paginationContainer">
+                {{ paginate | default_pagination }}
+            </div>
+        {% endif %}
+    {% endpaginate %}
+</div>
+
+{% schema %}
+{
+    "name": "Collection Page",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "showBanner",
+            "label": "Enbale Banner",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "showTitle",
+            "label": "Show Title",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "bgImage",
+            "label": "Banner Image"
+        },
+        {
+            "type": "text",
+            "id": "bannerHeading",
+            "label": "Banner Heading"
+        },
+        {
+            "type": "select",
+            "id": "selectSize",
+            "label": "Items per row",
+            "options": [
+                {
+                    "value": "2",
+                    "label": "2"
+                },
+                {
+                    "value": "3",
+                    "label": "3"
+                },
+                {
+                    "value": "4",
+                    "label": "4"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

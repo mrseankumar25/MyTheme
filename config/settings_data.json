@@ -1,0 +1,274 @@
+{
+  "current": {
+    "social_twitter_link": "#",
+    "social_facebook_link": "#",
+    "social_pinterest_link": "#",
+    "social_instagram_link": "#",
+    "social_tumblr_link": "#",
+    "social_snapchat_link": "#",
+    "social_youtube_link": "#",
+    "social_vimeo_link": "#",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "main_menu": "main-menu"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "c37746d5-c5ad-409b-ba06-54f7e16bc59d": {
+            "type": "contactInfo",
+            "settings": {
+              "infoIcon": "phone",
+              "infoContent": "xxxxxxxxxx"
+            }
+          },
+          "814ba8f6-2b31-44e5-827b-19d4f14b0a78": {
+            "type": "contactInfo",
+            "settings": {
+              "infoIcon": "at",
+              "infoContent": "test@test@com"
+            }
+          },
+          "bd6dcce8-63ab-4d81-802a-3a29d19c4e4e": {
+            "type": "contactInfo",
+            "settings": {
+              "infoIcon": "marker",
+              "infoContent": "Lorem ipsum dolor sit amet."
+            }
+          }
+        },
+        "block_order": [
+          "c37746d5-c5ad-409b-ba06-54f7e16bc59d",
+          "814ba8f6-2b31-44e5-827b-19d4f14b0a78",
+          "bd6dcce8-63ab-4d81-802a-3a29d19c4e4e"
+        ],
+        "settings": {
+          "aboutHeading": "About Us",
+          "aboutContent": "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima laborum quo similique maiores repellendus eligendi quae! Repellendus eum amet enim.<\/p>",
+          "contactHeading": "Contact Us"
+        }
+      },
+      "1609611901fb37ba0d": {
+        "type": "banner",
+        "settings": {
+          "bannerImage": "shopify:\/\/shop_images\/designer-working-on-laptop.jpg",
+          "bannerHeading": "<p>The doubt about how advice is currently done sales \/ commissions \/ products and lack of independence.<\/p><p>Shine a light, make it simple.<\/p>",
+          "bannerLink": "#",
+          "bannerLinkContent": "Apply Here"
+        }
+      },
+      "16096119158b5070bb": {
+        "type": "partner",
+        "blocks": {
+          "563ceb35-af2e-482c-91a2-e69825f7874d": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "4445af74-a1b8-4d30-8808-57bf446c794d": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "f8ec0dd0-def3-40b2-90f0-f4b5a9ee5851": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "0fefc987-dcfd-4910-8123-3b82d6fad937": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "fbe5ce9d-f02c-4c6b-9b9c-e3198acd42f4": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "9d4563d5-38ab-42f4-9636-671280fc8c8d": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "cb688018-4608-4c69-9827-1551d3232c46": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "af31687a-778d-496f-9d4e-dccd77738cdc": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "6fdfac08-d2f8-4082-91b7-44f3c07ce377": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "afc03547-abd9-47e7-87ab-4a3b604631fc": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "e3f02f40-2561-4dfa-b0c0-58c3839b000b": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          },
+          "957e603a-65ff-4ab1-b69d-3daa7718bb7d": {
+            "type": "partners",
+            "settings": {
+              "partnerLogo": "shopify:\/\/shop_images\/logo_7751e2c1-6ce7-4252-8e15-1bf0157bfb6e.png"
+            }
+          }
+        },
+        "block_order": [
+          "563ceb35-af2e-482c-91a2-e69825f7874d",
+          "4445af74-a1b8-4d30-8808-57bf446c794d",
+          "f8ec0dd0-def3-40b2-90f0-f4b5a9ee5851",
+          "0fefc987-dcfd-4910-8123-3b82d6fad937",
+          "fbe5ce9d-f02c-4c6b-9b9c-e3198acd42f4",
+          "9d4563d5-38ab-42f4-9636-671280fc8c8d",
+          "cb688018-4608-4c69-9827-1551d3232c46",
+          "af31687a-778d-496f-9d4e-dccd77738cdc",
+          "6fdfac08-d2f8-4082-91b7-44f3c07ce377",
+          "afc03547-abd9-47e7-87ab-4a3b604631fc",
+          "e3f02f40-2561-4dfa-b0c0-58c3839b000b",
+          "957e603a-65ff-4ab1-b69d-3daa7718bb7d"
+        ],
+        "settings": {
+          "partnerHeading": "Partners"
+        }
+      },
+      "1609612523777fcbd6": {
+        "type": "testimonial",
+        "blocks": {
+          "61559dcc-68f1-4952-a526-3081cb264205": {
+            "type": "testimonials",
+            "settings": {
+              "cilentImage": "shopify:\/\/shop_images\/man-in-suit-bowtie.jpg",
+              "content": "<p>Sam’s background is a little different from the average financial adviser… He left school at 16 to pursue a professional football career. He retired at 26 deciding it was time to get married, start a family and pursue a new vocation.<\/p>",
+              "name": "Sam Sloma"
+            }
+          },
+          "358ad1e2-6f86-4b60-9e8b-013de72d7d68": {
+            "type": "testimonials",
+            "settings": {
+              "cilentImage": "shopify:\/\/shop_images\/man-in-suit-bowtie.jpg",
+              "content": "<p>Sam’s background is a little different from the average financial adviser… He left school at 16 to pursue a professional football career. He retired at 26 deciding it was time to get married, start a family and pursue a new vocation.<\/p>",
+              "name": "Sam Sloma"
+            }
+          }
+        },
+        "block_order": [
+          "61559dcc-68f1-4952-a526-3081cb264205",
+          "358ad1e2-6f86-4b60-9e8b-013de72d7d68"
+        ],
+        "settings": {
+          "cilentHeading": "TESTIMONIAL"
+        }
+      },
+      "1609612666137e7428": {
+        "type": "image-with-content",
+        "settings": {
+          "bgImage": "shopify:\/\/shop_images\/different.jpg",
+          "heading": "HOW WE ARE DIFFERENT",
+          "content": "<p><em><strong>Lorem Ipsum <\/strong><\/em>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#x27;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum<\/p>"
+        }
+      },
+      "160961278587e5a25f": {
+        "type": "image-box",
+        "blocks": {
+          "ecc7a26d-0454-43bd-9e20-cde67363a33a": {
+            "type": "box",
+            "settings": {
+              "boxHeading": "PURPOSE",
+              "boxImage": "shopify:\/\/shop_images\/valueImage1.jpg",
+              "boxContent": "<p>Our mission is to help you to feel in control of your life and finances. We’ll help you focus on your dreams and ambitions, then provide a financial plan to help you achieve them.<\/p>"
+            }
+          },
+          "2e03145f-01de-4c32-a9f6-2f61f682b666": {
+            "type": "box",
+            "settings": {
+              "boxHeading": "INTEGRITY",
+              "boxImage": "shopify:\/\/shop_images\/valueImage2.jpg",
+              "boxContent": "<p>We’re committed to providing truly unbiased advice. We charge on a fixed fee basis, which means you pay us one yearly fee to manage your money. There won’t be any hidden charges.<\/p>"
+            }
+          },
+          "5dc7a9b2-170f-49b3-904a-9a8ffcb6da42": {
+            "type": "box",
+            "settings": {
+              "boxHeading": "EMPATHY",
+              "boxImage": "shopify:\/\/shop_images\/valueImage3.jpg",
+              "boxContent": "<p>We believe that life is about the journey not the destination. We’ll take time to ensure your financial planning continues to meet your objectives, no matter how your life might change.<\/p>"
+            }
+          }
+        },
+        "block_order": [
+          "ecc7a26d-0454-43bd-9e20-cde67363a33a",
+          "2e03145f-01de-4c32-a9f6-2f61f682b666",
+          "5dc7a9b2-170f-49b3-904a-9a8ffcb6da42"
+        ],
+        "settings": {
+          "heading": "the value we bring"
+        }
+      },
+      "1609612817efd1dc59": {
+        "type": "image-with-content-and-link",
+        "settings": {
+          "bgImage": "shopify:\/\/shop_images\/message.jpg",
+          "heading": "The standard Lorem Ipsum passage, used since the 1500s",
+          "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<\/p>",
+          "link": "#",
+          "linkLabel": "Apply Here",
+          "align": "left"
+        }
+      },
+      "list-collection": {
+        "type": "list-collection",
+        "settings": {
+          "bgImage": "shopify:\/\/shop_images\/flat-lay-of-products-on-blue.jpg",
+          "bannerHeading": "Collection List",
+          "defaultImage": "shopify:\/\/shop_images\/designer-working-on-laptop.jpg",
+          "boxSize": 3
+        }
+      },
+      "collection-template": {
+        "type": "collection-template",
+        "settings": {
+          "showBanner": true,
+          "showTitle": true,
+          "bgImage": "shopify:\/\/shop_images\/flat-lay-of-products-on-blue.jpg",
+          "bannerHeading": "",
+          "selectSize": "4"
+        }
+      }
+    },
+    "content_for_index": [
+      "1609611901fb37ba0d",
+      "16096119158b5070bb",
+      "1609612523777fcbd6",
+      "1609612666137e7428",
+      "160961278587e5a25f",
+      "1609612817efd1dc59"
+    ]
+  },
+  "presets": {
+    "Default": {
+    }
+  }
+}

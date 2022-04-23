@@ -1,0 +1,72 @@
+<div class="banner overlayer" style="background-image: url({{ section.settings.bgImage | img_url: 'master' }});">
+    <div class="bannerInner">
+        <div class="container">
+            {% if section.settings.bannerHeading != blank %}
+                <h1>{{ section.settings.bannerHeading }}</h1>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<section class="sectionPadd">
+    <div class="container">
+        {% assign collectionSize = collections | size %}
+        {% if collectionSize > 0 %}
+            <ul class="collectionList">
+                {% case section.settings.boxSize %}
+                    {% when 2 %}
+                        {% assign boxSize = 'box2' %}
+                    {% when 3 %}
+                        {% assign boxSize = 'box3' %}
+                    {% else %}
+                        {% assign boxSize = 'box4' %}
+                {% endcase %}
+                {% for collection in collections %}
+                    <li class="box {{ boxSize }}">
+                        {% assign collectionImage = section.settings.defaultImage | img_url: 'master' %}
+                        {% if collection.image.src != blank %}
+                            {% assign collectionImage = collection.image | img_url: 'master' %}
+                        {% endif %}
+                        <a href="{{ collection.url }}" title="{{ collection.title }}" style="background-image: url({{ collectionImage }});">
+                            {{ collection.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2>Oppes! Looks like we don't have what your looking for. :(</h2>
+        {% endif %}
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": "List Collection Page",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "bgImage",
+            "label": "Banner Image"
+        },
+        {
+            "type": "text",
+            "id": "bannerHeading",
+            "label": "Banner Heading"
+        },
+        {
+            "type": "image_picker",
+            "id": "defaultImage",
+            "label": "Default Image"
+        },
+        {
+            "type": "range",
+            "id": "boxSize",
+            "label": "Items per row",
+            "min": 2,
+            "max": 4,
+            "step": 1,
+            "default": 3
+        }
+    ]
+}
+{% endschema %}
