@@ -102,7 +102,32 @@ theme.addToCart = async (items) => {
 	} else {
 		theme.getCart('success')
 	}
-	console.info(res);
+}
+
+theme.addToCartDrawer = async (items) => {
+	const req = await fetch('/cart/add.json', {
+		method: "POST",
+		headers: {
+			"Content-type": "application/json"
+		},
+		body: JSON.stringify(items)
+	});
+	const res = await req.json();
+
+	const cartReq = await fetch('/cart?view=ajax')
+	const cartRes = await cartReq.text();
+
+	console.info(jQuery(document).find('.cartPopup').length);
+	if(jQuery(document).find('.cartPopup').length > 0) {
+		jQuery(document).find('.cartPopup').html(cartRes)
+	} else {
+		const cartPopup = `<div class="cartPopup cartPopupDrawer">
+			<div class="cartPopupClose">x</div>
+			<div class="cartPopupBody">${ cartRes }</div>
+		</div>`;
+		jQuery('body').prepend(cartPopup);
+	}
+	jQuery(document).find('.cartPopup').addClass('cartPopupDrawerOpen')
 }
 
 (function($) {
@@ -178,20 +203,44 @@ theme.addToCart = async (items) => {
 	});
 
 	jQuery('.addToCartForm').on('submit', function(e) {
-			if(jQuery(this).data('ajax')) {
+			if(jQuery(this).data('ajax') == "notification" || jQuery(this).data('ajax') == "drawer") {
 				e.preventDefault();
 				const formData = {
 					"items": [
 						{
-							"id": jQuery(this).find('input[name="id"]').val(),
+							"id": jQuery(this).find('[name="id"]').val(),
 							"quantity": jQuery(this).find('input[name="quantity"]').val()
 						}
 					]
 				}
 
-				theme.addToCart(formData);
+				if(jQuery(this).data('ajax') == "notification") {
+					theme.addToCart(formData);
+				} else {
+					theme.addToCartDrawer(formData)
+				}
 			} else {
 				jQuery(this).submit();
 			};
+	})
+	jQuery(document).on('click', '.cartPopupClose', function() {
+		jQuery(this).parents('.cartPopup').removeClass('cartPopupDrawerOpen')
+	})
+	jQuery(document).on('change', '.cartPopup .cartFormWrapper input', async function() {
+		const req = await fetch('/cart/change.js', {
+			method: "POST",
+			headers: {
+				"Content-type": "application/json"
+			},
+			body: JSON.stringify({
+				"id": `${jQuery(this).data('key')}`,
+				"quantity": jQuery(this).val()
+			})
+		})
+		const res = await req.json();
+
+		const cartReq = await fetch('/cart?view=ajax')
+		const cartRes = await cartReq.text();
+		jQuery(document).find('.cartPopup').html(cartRes)
 	})
 })(jQuery);

@@ -1418,29 +1418,23 @@
     },
     "settings": [
       {
-        "type": "checkbox",
-        "id": "enable_ajax",
-        "label": {
-          "da": "Vis meddelelse, når vare lægges i indkøbskurven",
-          "de": "Benachrichtigung anzeigen, wenn Artikel in den Warenkorb gelegt wird",
-          "en": "Show notification when item is added to cart",
-          "es": "Mostrar notificación cuando se agrega un artículo al carrito de compra",
-          "fi": "Näytä ilmoitus, kun tuote lisätään ostoskoriin",
-          "fr": "Afficher la notification lorsque l'article est ajouté au panier",
-          "hi": "जब आइटम को कार्ट में जोड़ा जाता है, तो सूचना दिखाएं",
-          "it": "Visualizza notifica quando l'articolo viene aggiunto al carrello",
-          "ja": "アイテムがカートに追加されたときに通知を表示する",
-          "ko": "품목이 카트에 추가되면 알림 표시",
-          "nb": "Vis et varsel når produktet legges til i handlekurven",
-          "nl": "Melding weergeven wanneer artikel aan winkelwagen is toegevoegd",
-          "pt-BR": "Mostrar notificação ao adicionar item ao carrinho",
-          "pt-PT": "Mostrar notificação quando o item é adicionado ao carrinho",
-          "sv": "Visa meddelande när objektet läggs till i varukorgen",
-          "th": "แสดงการแจ้งเตือนเมื่อมีการเพิ่มสินค้าลงในตะกร้า",
-          "zh-CN": "将产品添加到购物车时显示通知",
-          "zh-TW": "新增商品至購物車時顯示通知"
-        },
-        "default": true
+        "id": "cart_type",
+        "label": "Cart Type",
+        "options": [
+          {
+            "label": "Page",
+            "value": "page"
+          },
+          {
+            "label": "Drawer",
+            "value": "drawer"
+          },
+          {
+            "label": "Notification",
+            "value": "notification"
+          }
+        ],
+        "type": "select"
       }
     ]
   },

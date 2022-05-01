@@ -24,7 +24,7 @@
 								</td>
 								<td>{{ item.price | money }}</td>
 								<td>
-									<input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
+									<input type="number" name="updates[]" data-id="{{ item.id }}" data-key="{{ item.key }}" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
 								</td>
 								<td>
 									{% if item.original_line_price != item.line_price %}
@@ -66,5 +66,60 @@
 	}
 	#shopify-section-{{ section.id }} .emptyCart ~ .emptyCartWreapper {
 		display: block;
+	}
+
+	.cartPopup {
+		max-height: 100%;
+		overflow: auto;
+	}
+
+	.cartPopupDrawer {
+		transform: translateX(100%);
+		transition: transform .5s linear;
+	}
+
+	.cartPopupDrawer.cartPopupDrawerOpen {
+		transform: translateX(0%)
+	}
+
+	.cartPopupClose {
+		font-size: 2rem;
+		font-weight: bold;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+	.cartPopup .cartFormWrapper {
+		padding: 0 !important;
+	}
+
+	.cartPopup .container {
+			max-width: 100%;
+	}
+
+	.cartPopup table.table, table.table *:not(input) {
+			border: none !important;
+			display: block;
+			max-width: 100%;
+	}
+
+	.cartPopup table.table tr + tr {
+			border-top: 1px solid currentColor !important;
+			margin-top: 1em;
+			padding-top: 1em;
+	}
+
+	.cartPopup table.table thead {
+			display: none;
+	}
+
+	.cartFormWrapper > form > label,
+	.cartPopup .siteBtn:not(:nth-child(3))  {
+		display: none;
+	}
+	.cartPopup .siteBtn {
+		margin: 0 !important;
+		width: 100%;
 	}
 {% endstyle %}

@@ -96,7 +96,7 @@
                     </div>
 
                     <div class="productForm">
-                        {% form "product", product, class: "addToCartForm", data-ajax: section.settings.enableAjaxCart %}
+                        {% form "product", product, class: "addToCartForm", data-ajax: settings.cart_type %}
                             <input type="hidden" name="quantity" value="1">
                             
                             {%if product.options_with_values.size > 1 %}
@@ -112,14 +112,17 @@
                                 {% endfor %}
                                 <select class="hide" name="id">
                                     {% for variant in product.variants %}
-                                        <option data-p="{{ variant.price | money_with_currency }}" data-img="{{ variant.featured_image | img_url: 'master' }}" value="{{ variant.id }}" data-available="{{ variant.available }}">{{ variant.title }}</option>
+                                        <option data-p="{{ variant.price | money_with_currency }}" data-img="{{ variant.featured_image | img_url: 'master' }}" value="{{ variant.id }}" data-available="{{ variant.available }}"{% if variant.id == product.selected_or_first_available_variant.id %} selected{% endif %}>{{ variant.title }}</option>
                                     {% endfor %}
                                 </select>
                             {% else %}
                                 <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                             {% endif %}
 
-                            <button class="siteBtn black-btn" type="submit">Add To Cart</button>
+                            <button class="siteBtn black-btn" type="submit"{% unless product.selected_or_first_available_variant.available %} disabled{% endunless %}>
+                                <span>Add To Cart</span>
+                                <span>Sold Out</span>
+                            </button>
                         {% endform %}
                     </div>
                 </div>
@@ -155,12 +158,6 @@
             "type": "checkbox",
             "id": "enableAddToCart",
             "label": "Enable Add To Cart",
-            "default": false
-        },
-        {
-            "type": "checkbox",
-            "id": "enableAjaxCart",
-            "label": "Enable Ajax Cart",
             "default": false
         },
         {
@@ -265,6 +262,8 @@ input:checked + label::before {
 
 .productValue input:checked + label {background-color: #000000;color: #ffffff;}
 
+.siteBtn[disabled] span:first-child,
+.siteBtn:not([disabled]) span:last-child,
 .productValue label::before {display: none;}
 {% endstylesheet %}
 
@@ -312,6 +311,7 @@ input:checked + label::before {
     jQuery(document).ready(function() {
         jQuery(document).on('change', ".productValue input", function() {
             let variantValue = ''
+            let available = false
             jQuery(this).parents('form').find('.productValue input:checked').each(function(i, el) {
                 variantValue += (i > 0 ? ' / ' : '') + jQuery(this).val()
             })
@@ -319,13 +319,13 @@ input:checked + label::before {
             jQuery(this).parents('form').find('select[name="id"] option').each(function() {
                 if(jQuery(this).text() == variantValue) {
                     jQuery(this).attr('selected', true)
+                    available = jQuery(this).data('available')
                 } else {
                     jQuery(this).removeAttr('selected')
                 }
                 jQuery(this).parent().change()
 
                 jQuery(this).parent().find('option').each(function() {
-                    console.log(variantValue, jQuery(this).attr('selected'))
                     if(jQuery(this).attr('selected')) {
                         const opt = jQuery(this);
     
@@ -333,9 +333,13 @@ input:checked + label::before {
                         jQuery(this).parents('.productBox').find('.rPrice').text(opt.data('p'))
                     }
                 })
+
             })
-        })
-        jQuery(document).on('change', 'select[name="id"]', function() {
+            if(available) {
+                jQuery(this).parents('.productBox').find('.siteBtn').removeAttr('disabled')
+            } else {
+                jQuery(this).parents('.productBox').find('.siteBtn').attr('disabled', true)
+            }
         })
     })
 </script>
