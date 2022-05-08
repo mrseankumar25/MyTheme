@@ -14,7 +14,7 @@
     <div class="col-12 col-md-6">
       <div {% if section.settings.galleryType != "gallery" %}id="thumnailSlider" class="owl-carousel owl-theme"{% else %}class="productGallery"{% endif %}>
         {% for image in product.images %}
-          <div class="thumbnailWrapper" data-id="{{ image.id }}">
+          <div class="thumbnailWrapper" data-id="{{ image.id }}" data-alt="{{ image.alt }}">
             <div class="imageContainer">
               <a href="{{ image.src | img_url: 'large' }}" class="lightbox">
                 <img src="{{ image.src | img_url: 'master' }}" alt="{{ image.alt | escape }}">
@@ -29,7 +29,7 @@
       <p class="price mb-1">{{ current_variant.price | money }}</p>
       <div class="description mb-2">{{ product.description }}</div>
 
-      {% form 'product', product, novalidate: 'novalidate' %}
+      {% form 'product', product, novalidate: 'novalidate', date-fillter: section.settings.enableFillter %}
         {% unless product.has_only_default_variant %}
           <div class="singleSelectorContainer">
             {% for option in product.options_with_values %}
@@ -113,6 +113,11 @@
       "default": "gallery"
     },
     {
+      "id": "enableFillter",
+      "label": "Enable Fillter",
+      "type": "checkbox"
+    },
+    {
       "type": "header",
       "content": "Hide Or Show content"
     },
@@ -154,60 +159,65 @@
 
 {% javascript %}
   jQuery(document).ready(function() {
-    jQuery('#thumnailSlider').owlCarousel({
+    const slider =  jQuery('#thumnailSlider').owlCarousel({
       dots: true,
       items: 1,
       margin: 0,
       nav: false,
     });
-  });
-
-  $('.singleSelector').on('change', function() {
-    let variantName = '';
-    let productStatus = false;
-    $('.singleSelectorWrapper').each(function(i) {
-      const tagname = $(this).find('.singleSelector')[0].nodeName
-      if(tagname == "SELECT") {
-        variantName += (i != 0 ? ' / ' : '') +  $(this).find('.singleSelector').val();
-      } else if(tagname == "INPUT") {
-        $(this).find('.singleSelector').each(function() {
-          if($(this).is(':checked')) {
-            variantName += (i != 0 ? ' / ' : '') +  $(this).val();
-          }
-        })
-      }
-    })
-
-    $('#productSelect option').each(function() {
-      if($(this).text().includes(variantName)) {
-        productStatus = true;
-        const mediaId = jQuery(this).data('img');
-        const slideIndex = jQuery(`.thumbnailWrapper[data-id="${ mediaId }"]`).parent().index()
-        $(this).parent().val($(this).val())
-        if(!$(this).data('available')) {
-          productStatus = false;
+  
+    $('.singleSelector').on('change', function() {
+      let variantName = '';
+      let variantValue = jQuery(this).val();
+      let productStatus = false;
+      $('.singleSelectorWrapper').each(function(i) {
+        const tagname = $(this).find('.singleSelector')[0].nodeName
+        if(tagname == "SELECT") {
+          variantName += (i != 0 ? ' / ' : '') +  $(this).find('.singleSelector').val();
+        } else if(tagname == "INPUT") {
+          $(this).find('.singleSelector').each(function() {
+            if($(this).is(':checked')) {
+              variantName += (i != 0 ? ' / ' : '') +  $(this).val();
+            }
+          })
         }
-        let newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?variant=' + $(this).val()
-        window.history.pushState({path: newUrl}, '', newUrl)
+      })
+  
+      $('#productSelect option').each(function() {
+        if($(this).text().includes(variantName)) {
+          productStatus = true;
+          const mediaId = jQuery(this).data('img');
+          const slideIndex = jQuery(`.thumbnailWrapper[data-id="${ mediaId }"]`).parent().index()
+          $(this).parent().val($(this).val())
+          if(!$(this).data('available')) {
+            productStatus = false;
+          }
+          let newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?variant=' + $(this).val()
+          window.history.pushState({path: newUrl}, '', newUrl)
 
-        jQuery('#thumnailSlider').trigger('to.owl.carousel', slideIndex)
+          if(jQuery(this).parents('form').attr('date-fillter') == 'true') {
+            slider.owlcarousel2_filter(`[data-alt="${ variantValue }"]`)
+          } else {
+            jQuery('#thumnailSlider').trigger('to.owl.carousel', slideIndex)
+          }
+        }
+      })
+  
+      if(productStatus) {
+        $('#AddToCart').text("Add To Cart").removeAttr('disabled')
+      } else {
+        $('#AddToCart').text("Sold Out").attr('disabled', 'disabled')
       }
+  
+      $('.tabsHeader .tabTitle').on('click', function() {
+        console.log($(this).index());
+  
+        $(this).siblings().removeClass('active');
+        $(this).parents('.tabsContainer').find('.tabsBody .tabContant').removeClass('active');
+  
+        $(this).addClass('active');
+        $(this).parents('.tabsContainer').find('.tabsBody .tabContant').eq($(this).index()).addClass('active');
+      })
     })
-
-    if(productStatus) {
-      $('#AddToCart').text("Add To Cart").removeAttr('disabled')
-    } else {
-      $('#AddToCart').text("Sold Out").attr('disabled', 'disabled')
-    }
-
-    $('.tabsHeader .tabTitle').on('click', function() {
-      console.log($(this).index());
-
-      $(this).siblings().removeClass('active');
-      $(this).parents('.tabsContainer').find('.tabsBody .tabContant').removeClass('active');
-
-      $(this).addClass('active');
-      $(this).parents('.tabsContainer').find('.tabsBody .tabContant').eq($(this).index()).addClass('active');
-    })
-  })
+  });
 {% endjavascript %}
