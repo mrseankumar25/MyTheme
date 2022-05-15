@@ -211,7 +211,6 @@
         "settings": {
           "showBanner": true,
           "enableAddToCart": true,
-          "enableAjaxCart": true,
           "showTitle": true,
           "bgImage": "shopify:\/\/shop_images\/laptop-from-above.jpg",
           "bannerHeading": "",
@@ -224,8 +223,16 @@
         "type": "product-template",
         "settings": {
           "galleryType": "slider",
+          "enableFillter": true,
           "qtyCheck": false,
           "dyamincButtons": false
+        }
+      },
+      "list-collection": {
+        "type": "list-collection",
+        "settings": {
+          "bannerHeading": "",
+          "boxSize": 3
         }
       }
     },

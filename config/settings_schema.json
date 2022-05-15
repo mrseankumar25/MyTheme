@@ -1455,6 +1455,26 @@
             "value": "swatch"
           }
         ]
+      },
+      {
+        "id": "productGalleryType",
+        "label": "Product Gallery Type",
+        "options": [
+          {
+            "label": "Owl",
+            "value": "owl"
+          },
+          {
+            "label": "Slick",
+            "value": "slick"
+          }
+        ],
+        "type": "select"
+      },
+      {
+        "id": "enableThumbs",
+        "label": "Enable Thumbs",
+        "type": "checkbox"
       }
     ]
   }

@@ -12,7 +12,7 @@
 <div class="container py-5">
   <div class="row">
     <div class="col-12 col-md-6">
-      <div {% if section.settings.galleryType != "gallery" %}id="thumnailSlider" class="owl-carousel owl-theme"{% else %}class="productGallery"{% endif %}>
+      <div {% if section.settings.galleryType != "gallery" %}class="{% if settings.productGalleryType == "owl" %}mainSlider owl-carousel owl-theme{% else %}slickProductGallery{% endif %}"{% else %}class="productGallery"{% endif %}{% if settings.enableThumbs %} data-thumb-slider{% endif %}>
         {% for image in product.images %}
           <div class="thumbnailWrapper" data-id="{{ image.id }}" data-alt="{{ image.alt }}">
             <div class="imageContainer">
@@ -23,6 +23,18 @@
           </div>
         {% endfor %}
       </div>
+
+      {% if settings.enableThumbs %}
+        <div class="thumbSlider">
+          {% for image in product.images %}
+            <div class="thumbnailWrapper" data-id="{{ image.id }}" data-alt="{{ image.alt }}">
+              <div class="imageContainer">
+                <img src="{{ image.src | img_url: '200x200' }}" alt="{{ image.alt | escape }}" height="{{ image.height }}" width="{{ image.width }}" loading="lazy">
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
     <div class="col-12 col-md-6">
       <h2 class="text-left mb-1">{{ product.title }}</h2>
@@ -93,77 +105,101 @@
 </div>
 
 {% schema %}
-{
-  "name": "Product Page",
-  "settings": [
-    {
-      "type": "select",
-      "id": "galleryType",
-      "label": "Gallery Type",
-      "options": [
-        {
-          "value": "gallery",
-          "label": "Gallery"
-        },
-        {
-          "value": "slider",
-          "label": "Slider"
-        }
-      ],
-      "default": "gallery"
-    },
-    {
-      "id": "enableFillter",
-      "label": "Enable Fillter",
-      "type": "checkbox"
-    },
-    {
-      "type": "header",
-      "content": "Hide Or Show content"
-    },
-    {
-      "type": "checkbox",
-      "id": "qtyCheck",
-      "label": "Hide Quantity"
-    },
-    {
-      "type": "checkbox",
-      "id": "dyamincButtons",
-      "label": "Show Dynamic Buttons"
-    }
-  ]
-}
+  {
+    "name": "Product Page",
+    "settings": [
+      {
+        "type": "select",
+        "id": "galleryType",
+        "label": "Gallery Type",
+        "options": [
+          {
+            "value": "gallery",
+            "label": "Gallery"
+          },
+          {
+            "value": "slider",
+            "label": "Slider"
+          }
+        ],
+        "default": "gallery"
+      },
+      {
+        "id": "enableFillter",
+        "label": "Enable Fillter",
+        "type": "checkbox"
+      },
+      {
+        "type": "header",
+        "content": "Hide Or Show content"
+      },
+      {
+        "type": "checkbox",
+        "id": "qtyCheck",
+        "label": "Hide Quantity"
+      },
+      {
+        "type": "checkbox",
+        "id": "dyamincButtons",
+        "label": "Show Dynamic Buttons"
+      }
+    ]
+  }
 {% endschema %}
 
 {% style %}
-.tabsHeader {
-  border: 2px solid;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 1em 0 0 0;
-}
-.tabTitle {
-  border: 1px solid;
-  flex: 1 1 auto;
-  margin: 0;
-  padding: .5em .75em;
-  text-align: center;
-}
-.tabContant {
-  display: none;
-}
-.tabContant.active {
-  display: block;
-}
+  .tabsHeader {
+    border: 2px solid;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1em 0 0 0;
+  }
+  .tabTitle {
+    border: 1px solid;
+    flex: 1 1 auto;
+    margin: 0;
+    padding: .5em .75em;
+    text-align: center;
+  }
+  .tabContant {
+    display: none;
+  }
+  .tabContant.active {
+    display: block;
+  }
+  .thumbSlider .imageContainer {
+    padding: 0 5px;
+  }
+  .thumbSlider .imageContainer img {
+    height: auto;
+  }
+  .imageContainer img {
+    width: 100%;
+  }
 {% endstyle %}
 
 {% javascript %}
   jQuery(document).ready(function() {
-    const slider =  jQuery('#thumnailSlider').owlCarousel({
+    const slider =  jQuery('.mainSlider').owlCarousel({
       dots: true,
       items: 1,
       margin: 0,
       nav: false,
+    });
+    jQuery('.slickProductGallery').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      arrows: false,
+      fade: true,
+      asNavFor: '.thumbSlider'
+    });
+    jQuery('.thumbSlider').slick({
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      asNavFor: '.slickProductGallery',
+      dots: true,
+      centerMode: true,
+      focusOnSelect: true
     });
   
     $('.singleSelector').on('change', function() {
@@ -195,10 +231,16 @@
           let newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?variant=' + $(this).val()
           window.history.pushState({path: newUrl}, '', newUrl)
 
+          $('.slickProductGallery').slick('slickUnfilter');
+          $('.thumbSlider').slick('slickUnfilter');
+
           if(jQuery(this).parents('form').attr('date-fillter') == 'true') {
-            slider.owlcarousel2_filter(`[data-alt="${ variantValue }"]`)
+            console.info(slider);
+            if(slider.length > 0) slider.owlcarousel2_filter(`[data-alt="${ variantValue }"]`)
+            $('.slickProductGallery').slick('slickFilter', `[data-alt="${ variantValue }"]`);
+            $('.thumbSlider').slick('slickFilter', `[data-alt="${ variantValue }"]`);
           } else {
-            jQuery('#thumnailSlider').trigger('to.owl.carousel', slideIndex)
+            jQuery('.mainSlider').trigger('to.owl.carousel', slideIndex)
           }
         }
       })
