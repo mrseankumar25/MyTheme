@@ -1,0 +1,51 @@
+<div class="customNewsletterWrapper">
+  <div class="container">
+    {% if section.settings.header %}<h2>{{ section.settings.header }}</h2>{% endif %}
+    {% if section.settings.content %}<div class="content">{{ section.settings.content }}</div>{% endif %}
+
+    {% form 'customer', class: "customNewsletterForm" %}
+      <input type="hidden" name="contact[tags]" value="newslertter">
+      <input type="email" name="contact[email]" value="{{ form.email }}">
+      <input type="text" name="contact[first_name]" value="{{ form.first_name }}">
+      <input type="text" name="contact[last_name]" value="{{ form.last_name }}">
+
+      <input type="hidder" name="contact[note][Url]" value="{{ request.host }}{{ request.path }}">
+      <textarea name="contact[note][Message]"></textarea>
+
+      <button type="submit">Submit</button>
+
+      {% if form.errors %}
+        {% for error in form.errors %}
+          <div class="error">{{ form.errors.translated_fields[error] }} {{ form.errors.messages[error] }}</div>
+        {% endfor %}
+      {% endif %}
+
+      {% if form.posted_successfully? %}
+        <h3>Submitted successfully</h3>
+      {% endif %}
+    {% endform %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom newslertter",
+  "presets": [
+    {
+      "name": "Custom newslertter"
+    }
+  ],
+  "settings": [
+    {
+      "id": "header",
+      "label": "Header",
+      "type": "text"
+    },
+    {
+      "id": "content",
+      "label": "Content",
+      "type": "richtext"
+    }
+  ]
+}
+{% endschema %}
