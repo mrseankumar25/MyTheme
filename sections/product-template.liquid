@@ -41,7 +41,7 @@
       <p class="price mb-1">{{ current_variant.price | money }}</p>
       <div class="description mb-2">{{ product.description }}</div>
 
-      {% form 'product', product, novalidate: 'novalidate', date-fillter: section.settings.enableFillter %}
+      {% form 'product', product, novalidate: 'novalidate', class: "addToCartForm", data-ajax: settings.cart_type, date-fillter: section.settings.enableFillter %}
         {% unless product.has_only_default_variant %}
           <div class="singleSelectorContainer">
             {% for option in product.options_with_values %}

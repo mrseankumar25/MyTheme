@@ -90,7 +90,7 @@ theme.addToCart = async (items) => {
 jQuery(document).ready(function($) {
   let gallery = $('.gallery a').simpleLightbox();
 
-  jQuery('.addToCartForm').on('submit', (e) => {
+  jQuery(document).on('submit', '.addToCartForm', (e) => {
     const form = jQuery(e.target);
     const ajaxEnabled = form.data('ajax') || false;
 

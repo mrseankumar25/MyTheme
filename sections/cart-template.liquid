@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="cartContainer">
 		<div class="cartFormWrapper{% if cart.item_count < 1 %} emptyCart{% endif %}">
-			<form action="/cart" method="post" novalidate>
+			<form action="/cart" method="post" novalidate data-ajax="{{ settings.cart_type }}">
 				<table class="table">
 					<thead>
 						<th colspan="2">Product</th>
@@ -20,11 +20,11 @@
 								<td>
 									<a href="{{ item.url }}">{{ item.product.title }}</a>
 									{{ item.variant.title }}
-									<a href="/cart/change?line={{ forloop.index }}&amp;quantity=0">remove</a>
+									<a class="remove" href="/cart/change?line={{ forloop.index }}&amp;quantity=0" data-line="{{ forloop.index }}" data-id="{{ item.id }}" data-key="{{ item.key }}">remove</a>
 								</td>
 								<td>{{ item.price | money }}</td>
 								<td>
-									<input type="number" name="updates[]" data-id="{{ item.id }}" data-key="{{ item.key }}" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
+									<input class="quantity" type="number" name="updates[]" data-line="{{ forloop.index }}" data-id="{{ item.id }}" data-key="{{ item.key }}" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
 								</td>
 								<td>
 									{% if item.original_line_price != item.line_price %}

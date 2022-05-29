@@ -119,7 +119,7 @@ theme.addToCartDrawer = async (items) => {
 
 	console.info(jQuery(document).find('.cartPopup').length);
 	if(jQuery(document).find('.cartPopup').length > 0) {
-		jQuery(document).find('.cartPopup').html(cartRes)
+		jQuery(document).find('.cartPopup').html(`<div class="cartPopupClose">x</div>${ cartRes }`)
 	} else {
 		const cartPopup = `<div class="cartPopup cartPopupDrawer">
 			<div class="cartPopupClose">x</div>
@@ -202,7 +202,7 @@ theme.addToCartDrawer = async (items) => {
 		allowClear: true
 	});
 
-	jQuery('.addToCartForm').on('submit', function(e) {
+	jQuery(document).on('submit', '.addToCartForm', function(e) {
 			if(jQuery(this).data('ajax') == "notification" || jQuery(this).data('ajax') == "drawer") {
 				e.preventDefault();
 				const formData = {
@@ -226,21 +226,102 @@ theme.addToCartDrawer = async (items) => {
 	jQuery(document).on('click', '.cartPopupClose', function() {
 		jQuery(this).parents('.cartPopup').removeClass('cartPopupDrawerOpen')
 	})
-	jQuery(document).on('change', '.cartPopup .cartFormWrapper input', async function() {
-		const req = await fetch('/cart/change.js', {
-			method: "POST",
-			headers: {
-				"Content-type": "application/json"
-			},
-			body: JSON.stringify({
-				"id": `${jQuery(this).data('key')}`,
-				"quantity": jQuery(this).val()
+	jQuery(document).on('change', '.cartFormWrapper input', async function() {
+		if(jQuery(this).parents('form').data('ajax') == "notification" || jQuery(this).parents('form').data('ajax') == "drawer") {
+			const req = await fetch('/cart/change.json', {
+				method: "POST",
+				headers: {
+					"Content-type": "application/json"
+				},
+				body: JSON.stringify({
+					"id": `${jQuery(this).data('key')}`,
+					"quantity": jQuery(this).val()
+				})
 			})
-		})
-		const res = await req.json();
+			const res = await req.json();
 
-		const cartReq = await fetch('/cart?view=ajax')
-		const cartRes = await cartReq.text();
-		jQuery(document).find('.cartPopup').html(cartRes)
+			const cartReq = await fetch('/cart?view=ajax')
+			const cartRes = await cartReq.text();
+			if(window.location.pathname == '/cart') {
+				jQuery(this).parents('.shopify-section').html(`${ cartRes }`)
+			} else {
+				jQuery(document).find('.cartPopup').html(`<div class="cartPopupClose">x</div>${ cartRes }`)
+			}
+		}
+	})
+	jQuery(document).on('click', '.cartFormWrapper .remove', async function(e) {
+		e.preventDefault();
+
+		if(jQuery(this).parents('form').data('ajax') == "notification" || jQuery(this).parents('form').data('ajax') == "drawer") {
+			const req = await fetch('/cart/change.json', {
+				method: "POST",
+				headers: {
+					"Content-type": "application/json"
+				},
+				body: JSON.stringify({
+					"id": `${jQuery(this).data('key')}`,
+					"quantity": 0
+				})
+			})
+			const res = await req.json();
+
+			const cartReq = await fetch('/cart?view=ajax')
+			const cartRes = await cartReq.text();
+			if(window.location.pathname == '/cart') {
+				jQuery(this).parents('.shopify-section').html(`${ cartRes }`)
+			} else {
+				jQuery(document).find('.cartPopup').html(`<div class="cartPopupClose">x</div>${ cartRes }`)
+			}
+		}
 	})
 })(jQuery);
+
+class LocalizationForm extends HTMLElement {
+  constructor() {
+    super();
+    this.elements = {
+      input: this.querySelector('input[name="language_code"], input[name="country_code"]'),
+      button: this.querySelector('button'),
+      panel: this.querySelector('ul'),
+    };
+    this.elements.button.addEventListener('click', this.openSelector.bind(this));
+    this.elements.button.addEventListener('focusout', this.closeSelector.bind(this));
+    this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
+
+    this.querySelectorAll('a').forEach(item => item.addEventListener('click', this.onItemClick.bind(this)));
+  }
+
+  hidePanel() {
+    this.elements.button.setAttribute('aria-expanded', 'false');
+    this.elements.panel.setAttribute('hidden', true);
+  }
+
+  onContainerKeyUp(event) {
+    if (event.code.toUpperCase() !== 'ESCAPE') return;
+
+    this.hidePanel();
+    this.elements.button.focus();
+  }
+
+  onItemClick(event) {
+    event.preventDefault();
+    const form = this.querySelector('form');
+    this.elements.input.value = event.currentTarget.dataset.value;
+    if (form) form.submit();
+  }
+
+  openSelector() {
+    this.elements.button.focus();
+    this.elements.panel.toggleAttribute('hidden');
+    this.elements.button.setAttribute('aria-expanded', (this.elements.button.getAttribute('aria-expanded') === 'false').toString());
+  }
+
+  closeSelector(event) {
+    const shouldClose = event.relatedTarget && event.relatedTarget.nodeName === 'BUTTON';
+    if (event.relatedTarget === null || shouldClose) {
+      this.hidePanel();
+    }
+  }
+}
+
+customElements.define('localization-form', LocalizationForm);
