@@ -1,0 +1,178 @@
+{% paginate search.results by 10 %}
+  <div class="container">
+    <form action="/search" method="get" role="search">
+      <input type="search" name="q" value="{{ search.terms | escape }}">
+      <button type="submit">search</button>
+    </form>
+
+    <div class="row">
+      {% liquid
+        case section.settings.productBox
+            when "2"
+                assign productBoxSize = 'col-md-6'
+            when "3"
+                assign productBoxSize = 'col-md-4'
+            else
+                assign productBoxSize = 'col-md-3'
+        endcase
+      %}
+      {% if search.performed %}
+        {% for item in search.results %}
+          <div class="col {{ productBoxSize }} productBox">
+            {{ item.object_type }}
+            <div class="productImgContainer">
+              <a href="{{ item.url | within: collection }}">
+                {% liquid
+                  if item.object_type == "article"
+                    assign img = item.image
+                  else
+                    assign img = item.featured_image
+                  endif
+                %}
+
+                <div class="productImg"{% unless img.src == blank %} style="background-image: url({{ img | img_url: 'large' }});"{% endunless %}>
+                  {% if item.object_type == "page" or img.src == blank %}
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  {% endif %}
+                  {% if item.object_type == "product" %}
+                    {% unless item.available %}
+                      <strong>Sold out</strong>
+                    {% endunless %}
+                  {% endif %}
+                </div>
+              </a>
+            </div>
+  
+            <div class="productContentContainer">
+              <div class="productTitle">
+                <a href="{{ item.url | within: collection }}">{{ item.title }}</a>
+              </div>
+            </div>
+  
+            {% if item.object_type == "product" %}
+              <div class="productPrice">
+                {% assign rPrice = item.price %}
+                {% assign cPrice = item.compare_at_price %}
+    
+                {% if rPrice != cPrice %}
+                  {% capture price %}<span class="rPrice">{{ rPrice | money }}</span><span class="cPrice">{{ cPrice | money }}</span>{% endcapture %}
+                {% else %}
+                  {% capture price %}<span class="rPrice">{{ rPrice | money }}</span>{% endcapture %}
+                {% endif %}
+                {{ price }}
+              </div>
+
+              <div class="productForm">
+                {% form "product", item, class: "addToCartForm", data-ajax: settings.cart_type %}
+                  <input type="hidden" name="quantity" value="1">
+                  {%if item.options_with_values.size > 1 %}
+                    {% for product_option in item.options_with_values %}
+                      <div class="productOption">
+                        {% for value in product_option.values %}
+                          <div class="productValue">
+                            <input id="option-{{ product_option.name | handleize }}-{{ forloop.index }}-{{ item.id }}" name="{{ product_option.name | handleize }}-{{ item.id }}" type="radio" value="{{ value }}"{% if product_option.selected_value == value %} checked{% endif %}>
+                            <label for="option-{{ product_option.name | handleize }}-{{ forloop.index }}-{{ item.id }}">{{ value }}</label>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    {% endfor %}
+                    <select class="hide" name="id">
+                      {% for variant in item.variants %}
+                        <option data-p="{{ variant.price | money_with_currency }}" data-img="{{ variant.featured_image | img_url: 'master' }}" value="{{ variant.id }}" data-available="{{ variant.available }}"{% if variant.id == item.selected_or_first_available_variant.id %} selected{% endif %}>{{ variant.title }}</option>
+                      {% endfor %}
+                    </select>
+                  {% else %}
+                    <input type="hidden" name="id" value="{{ item.selected_or_first_available_variant.id }}">
+                  {% endif %}
+                  <button class="siteBtn black-btn" type="submit"{% unless item.selected_or_first_available_variant.available %} disabled{% endunless %}>
+                    <span>Add To Cart</span>
+                    <span>Sold Out</span>
+                  </button>
+                {% endform %}
+              </div>
+            {% endif %}
+          </div>
+        {% else %}
+          <p>Opps! Looks we don't have what you looking for. :(</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+  
+    {% if paginate.pages > 1 %}
+      <div class="paginationContainer">
+        {{ paginate | default_pagination }}
+      </div>
+    {% endif %}
+  </div>
+{% endpaginate %}
+
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": [
+    {
+      "type": "select",
+      "id": "productBox",
+      "label": "Items in row",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+form.filter-form {
+    display: grid;
+    gap: 30px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-content: space-between;
+}
+label {
+    position: relative;
+}
+input:disabled + label {
+    opacity: .5;
+}
+label::before {
+    border: 1px solid currentColor;
+    content: '';
+    display: inline-block;
+    height: 0.5em;
+    margin: 0 0.25em 0 0;
+    vertical-align: middle;
+    width: 0.5em;
+}
+input:checked + label::before {
+    background-color: currentColor
+}
+
+.productOption {display: flex;justify-content: center;gap: 10px;flex-wrap: wrap;}
+
+.productOption + .productOption {margin-top: 15px;}
+
+.productValue {flex: 0 0 auto;}
+
+.productValue input {display: none;}
+
+.productValue label {border: 1px solid currentColor;padding: .25em .5em;}
+
+.productValue input:checked + label {background-color: #000000;color: #ffffff;}
+
+.siteBtn[disabled] span:first-child,
+.siteBtn:not([disabled]) span:last-child,
+.productValue label::before {display: none;}
+{% endstylesheet %}
