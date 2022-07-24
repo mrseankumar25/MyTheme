@@ -325,3 +325,13 @@ class LocalizationForm extends HTMLElement {
 }
 
 customElements.define('localization-form', LocalizationForm);
+
+const searchFormBtn = document.querySelector('.searchForm')
+searchFormBtn.addEventListener('click', function() {
+	document.querySelector('.searchFormModel').style.display = 'block'
+})
+
+const searchFormModelClose = document.querySelector('.searchFormModelClose')
+searchFormModelClose.addEventListener('click', function() {
+	document.querySelector('.searchFormModel').style.display = 'none'
+})

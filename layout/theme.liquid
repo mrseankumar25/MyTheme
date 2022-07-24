@@ -81,11 +81,27 @@
   {{ 'application.js' | asset_url | script_tag }}
 
   {{ 'vender.css' | asset_url | stylesheet_tag }}
+  {{ 'app.style.css' | asset_url | stylesheet_tag }}
 </head>
 <body>
   {% section 'header' %}
   {{ content_for_layout }}
   {% section 'footer' %}
+
+  <div class="searchFormModel">
+    <div class="searchFormModelClose">X</div>
+    <div class="searchFormModelWrapper">
+      <div class="searchForm">
+        <form action="{{ routes.search_url }}">
+          <input type="hidden" name="type" value="product">
+          <div class="searchFormFeilds">
+            <input type="text" name="q">
+            <input type="submit" value="Search">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
   {{ 'vender.js' | asset_url | script_tag }}
   {{ 'app.js' | asset_url | script_tag }}

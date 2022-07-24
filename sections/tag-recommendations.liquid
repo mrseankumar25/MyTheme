@@ -1,0 +1,39 @@
+{% assign proTag = product.tags | first %}
+<div class="product-recommendations__inner">
+  {%- if section.settings.heading != blank -%}
+    <div class="section-header text-center">
+      <h2>{{ section.settings.heading | escape }}</h2>
+    </div>
+  {%- endif -%}
+  <ul class="grid grid--uniform grid--view-items">
+    {%- for pro in collections.all.products -%}
+      {% if pro.tags contains proTag and product.id != pro.id %}
+        <li class="grid__item small--one-half medium-up--one-quarter">
+          {% include 'product-card-grid', max_height: 250, product: pro, show_vendor: section.settings.show_vendor %}
+        </li>
+      {% endif %}
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "Tag Recommendations",
+  "presets": [
+    {
+      "name": "Tag Recommendations"
+    }
+  ],
+  "settings": [
+    {
+      "default": "Heading",
+      "id": "heading",
+      "label": "Heading",
+      "type": "text"
+    }
+  ],
+  "templates": [
+    "product"
+  ]
+}
+{% endschema %}
