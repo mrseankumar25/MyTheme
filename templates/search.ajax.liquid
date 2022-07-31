@@ -1,0 +1,11 @@
+{% layout None %}
+{
+  "items": [
+    {% for item in search.results limit: 5 %}
+      {
+        "title": "{{ item.title }}",
+        "url": "{{ item.url }}"
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}

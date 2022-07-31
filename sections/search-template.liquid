@@ -19,7 +19,6 @@
       {% if search.performed %}
         {% for item in search.results %}
           <div class="col {{ productBoxSize }} productBox">
-            {{ item.object_type }}
             <div class="productImgContainer">
               <a href="{{ item.url | within: collection }}">
                 {% liquid

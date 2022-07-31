@@ -95,8 +95,10 @@
         <form action="{{ routes.search_url }}">
           <input type="hidden" name="type" value="product">
           <div class="searchFormFeilds">
-            <input type="text" name="q">
+            <input type="text" name="q" onkeyup="suggestionList(this)">
             <input type="submit" value="Search">
+          </div>
+          <div class="suggestionList">
           </div>
         </form>
       </div>

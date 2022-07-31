@@ -335,3 +335,27 @@ const searchFormModelClose = document.querySelector('.searchFormModelClose')
 searchFormModelClose.addEventListener('click', function() {
 	document.querySelector('.searchFormModel').style.display = 'none'
 })
+
+async function suggestionList(e) {
+	if(e.value.length > 2) {
+		const thisVal = e.value
+		const thisType = e.closest('form').querySelector('input[name="type"]').value
+		const suggestionList = e.closest('form').querySelector('.suggestionList')
+	
+		const req = await fetch(`/search?view=ajax&type=${ thisType }&q=${ thisVal }`)
+		const { items: res } = await req.json()
+
+		const ul = document.createElement('ul')
+		suggestionList.innerHTML = ''
+		res.forEach(item => {
+			const li = document.createElement('li')
+			const a = document.createElement('a')
+			a.href = item.url
+			a.innerText = item.title
+
+			li.append(a)
+			ul.append(li)
+		})
+		if(res.length > 0) suggestionList.append(ul)
+	}
+}
