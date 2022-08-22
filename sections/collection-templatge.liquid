@@ -1,10 +1,6 @@
-{%
-    render "banner"
-    bgImage: section.settings.bgImage,
-    bannerHeading: section.settings.bannerHeading,
-    showBanner: section.settings.showBanner,
-    showTitle: section.settings.showTitle,
-    title: collection.title
+{% liquid
+    assign subCollections = collection.metafields.extra.sub_collections.value
+    render "banner" bgImage: section.settings.bgImage, bannerHeading: section.settings.bannerHeading, showBanner: section.settings.showBanner, showTitle: section.settings.showTitle, title: collection.title
 %}
 
 <div class="container">
@@ -46,6 +42,22 @@
             {% endfor %}
         </form>
     {% endif %}
+
+    {% if subCollections != blank %}
+        <div class="filterWrapper">
+            <div class="filter-title">
+                <span>Sub Collections</span>
+            </div>
+            <ul class="filter-group-display__list">
+                {% for subCollection in subCollections %}
+                    <li class="filter-group-display__list-item">
+                        <a href="{{ collections[subCollection.value].url }}">{{ subCollection.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     {% paginate collection.products by 10 %}
         <div class="row" id="cardContainer">
             {% for product in collection.products %}
