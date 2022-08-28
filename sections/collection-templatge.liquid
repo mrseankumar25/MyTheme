@@ -1,6 +1,10 @@
-{% liquid
-    assign subCollections = collection.metafields.extra.sub_collections.value
-    render "banner" bgImage: section.settings.bgImage, bannerHeading: section.settings.bannerHeading, showBanner: section.settings.showBanner, showTitle: section.settings.showTitle, title: collection.title
+{%
+    render "banner"
+    bgImage: section.settings.bgImage,
+    bannerHeading: section.settings.bannerHeading,
+    showBanner: section.settings.showBanner,
+    showTitle: section.settings.showTitle,
+    title: collection.title
 %}
 
 <div class="container">
@@ -42,241 +46,227 @@
             {% endfor %}
         </form>
     {% endif %}
-
-    {% if subCollections != blank %}
-        <div class="filterWrapper">
-            <div class="filter-title">
-                <span>Sub Collections</span>
-            </div>
-            <ul class="filter-group-display__list">
-                {% for subCollection in subCollections %}
-                    <li class="filter-group-display__list-item">
-                        <a href="{{ collections[subCollection.value].url }}">{{ subCollection.title }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    {% paginate collection.products by 10 %}
-        <div class="row" id="cardContainer">
-            {% for product in collection.products %}
-                {% liquid
-                    case section.settings.productBox
-                        when "2"
-                            assign productBoxSize = 'col-md-6'
-                        when "3"
-                            assign productBoxSize = 'col-md-4'
-                        else
-                            assign productBoxSize = 'col-md-3'
-                    endcase
-                %}
-
-                <div class="col {{ productBoxSize }} productBox">
-                    <div class="productImgContainer">
-                        <a href="{{ product.url | within: collection }}">
-                            <div class="productImg" style="background-image: url({{ product.featured_image.src | img_url: 'large' }});">
-                                {% unless product.available %}
-                                <strong>Sold out</strong>
-                                {% endunless %}
+    <div id="collectionContainer">
+        {% paginate collection.products by 10 %}
+            <div class="row" id="cardContainer">
+                {% for product in collection.products %}
+                    {% liquid
+                        case section.settings.productBox
+                            when "2"
+                                assign productBoxSize = 'col-md-6'
+                            when "3"
+                                assign productBoxSize = 'col-md-4'
+                            else
+                                assign productBoxSize = 'col-md-3'
+                        endcase
+                    %}
+    
+                    <div class="col {{ productBoxSize }} productBox">
+                        <div class="productImgContainer">
+                            <a href="{{ product.url | within: collection }}">
+                                <div class="productImg" style="background-image: url({{ product.featured_image.src | img_url: 'large' }});">
+                                    {% unless product.available %}
+                                    <strong>Sold out</strong>
+                                    {% endunless %}
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <div class="productContentContainer">
+                            <div class="productTitle">
+                                <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
                             </div>
-                        </a>
-                    </div>
-                    
-                    <div class="productContentContainer">
-                        <div class="productTitle">
-                            <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+                        </div>
+    
+                        <div class="productPrice">
+                            {% assign rPrice = product.price %}
+                            {% assign cPrice = product.compare_at_price %}
+    
+                            {% if rPrice != cPrice %}
+                                {% capture price %}
+                                    <span class="rPrice">{{ rPrice | money }}</span>
+                                    <span class="cPrice">{{ cPrice | money }}</span>
+                                {% endcapture %}
+                            {% else %}
+                                {% capture price %}
+                                    <span class="rPrice">{{ rPrice | money }}</span>
+                                {% endcapture %}
+                            {% endif %}
+    
+                            {{ price }}
+                        </div>
+    
+                        <div class="productForm">
+                            {% form "product", product, class: "addToCartForm", data-ajax: settings.cart_type %}
+                                <input type="hidden" name="quantity" value="1">
+                                
+                                {%if product.options_with_values.size > 1 %}
+                                    {% for product_option in product.options_with_values %}
+                                        <div class="productOption">
+                                            {% for value in product_option.values %}
+                                                <div class="productValue">
+                                                    <input id="option-{{ product_option.name | handleize }}-{{ forloop.index }}-{{ product.id }}" name="{{ product_option.name | handleize }}-{{ product.id }}" type="radio" value="{{ value }}"{% if product_option.selected_value == value %} checked{% endif %}>
+                                                    <label for="option-{{ product_option.name | handleize }}-{{ forloop.index }}-{{ product.id }}">{{ value }}</label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                    <select class="hide" name="id">
+                                        {% for variant in product.variants %}
+                                            <option data-p="{{ variant.price | money_with_currency }}" data-img="{{ variant.featured_image | img_url: 'master' }}" value="{{ variant.id }}" data-available="{{ variant.available }}"{% if variant.id == product.selected_or_first_available_variant.id %} selected{% endif %}>{{ variant.title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}
+                                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                                {% endif %}
+    
+                                <button class="siteBtn black-btn" type="submit"{% unless product.selected_or_first_available_variant.available %} disabled{% endunless %}>
+                                    <span>Add To Cart</span>
+                                    <span>Sold Out</span>
+                                </button>
+                            {% endform %}
                         </div>
                     </div>
-
-                    <div class="productPrice">
-                        {% assign rPrice = product.price %}
-                        {% assign cPrice = product.compare_at_price %}
-
-                        {% if rPrice != cPrice %}
-                            {% capture price %}
-                                <span class="rPrice">{{ rPrice | money }}</span>
-                                <span class="cPrice">{{ cPrice | money }}</span>
-                            {% endcapture %}
-                        {% else %}
-                            {% capture price %}
-                                <span class="rPrice">{{ rPrice | money }}</span>
-                            {% endcapture %}
-                        {% endif %}
-
-                        {{ price }}
-                    </div>
-
-                    <div class="productForm">
-                        {% form "product", product, class: "addToCartForm", data-ajax: settings.cart_type %}
-                            <input type="hidden" name="quantity" value="1">
-                            
-                            {%if product.options_with_values.size > 1 %}
-                                {% for product_option in product.options_with_values %}
-                                    <div class="productOption">
-                                        {% for value in product_option.values %}
-                                            <div class="productValue">
-                                                <input id="option-{{ product_option.name | handleize }}-{{ forloop.index }}-{{ product.id }}" name="{{ product_option.name | handleize }}-{{ product.id }}" type="radio" value="{{ value }}"{% if product_option.selected_value == value %} checked{% endif %}>
-                                                <label for="option-{{ product_option.name | handleize }}-{{ forloop.index }}-{{ product.id }}">{{ value }}</label>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                {% endfor %}
-                                <select class="hide" name="id">
-                                    {% for variant in product.variants %}
-                                        <option data-p="{{ variant.price | money_with_currency }}" data-img="{{ variant.featured_image | img_url: 'master' }}" value="{{ variant.id }}" data-available="{{ variant.available }}"{% if variant.id == product.selected_or_first_available_variant.id %} selected{% endif %}>{{ variant.title }}</option>
-                                    {% endfor %}
-                                </select>
-                            {% else %}
-                                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                            {% endif %}
-
-                            <button class="siteBtn black-btn" type="submit"{% unless product.selected_or_first_available_variant.available %} disabled{% endunless %}>
-                                <span>Add To Cart</span>
-                                <span>Sold Out</span>
-                            </button>
-                        {% endform %}
-                    </div>
-                </div>
-            {% else %}
-                <p>Opps! Looks like we don't have any product. :(</p>
-            {% endfor %}
-        </div>
-
-        {% if paginate.pages > 1 %}
-            <div class="paginationContainer"{% if section.settings.paginateType == 'infinity' %} style="height: 0;overflow: hidden;"{% endif %}>
-                <input type="hidden" value="{{ paginate.pages }}">
-                {% if section.settings.paginateType == 'infinity' or section.settings.paginateType == 'loadMore' %}
-                    <span data-current="2" class="page loadMoreButton">Load More</span>
                 {% else %}
-                    {{ paginate | default_pagination }}
-                {% endif %}
+                    <p>Opps! Looks like we don't have any product. :(</p>
+                {% endfor %}
             </div>
-        {% endif %}
-    {% endpaginate %}
+    
+            {% if paginate.pages > 1 %}
+                <div class="paginationContainer"{% if section.settings.paginateType == 'infinity' %} style="height: 0;overflow: hidden;"{% endif %}>
+                    <input type="hidden" value="{{ paginate.pages }}">
+                    {% if section.settings.paginateType == 'infinity' or section.settings.paginateType == 'loadMore' %}
+                        <span data-current="2" class="page loadMoreButton">Load More</span>
+                    {% else %}
+                        {{ paginate | default_pagination }}
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endpaginate %}
+    </div>
 </div>
 
 {% schema %}
-{
-    "name": "Collection Section",
-    "settings": [
-        {
-            "type": "checkbox",
-            "id": "showBanner",
-            "label": "Show Banner",
-            "default": false
-        },
-        {
-            "type": "checkbox",
-            "id": "enableAddToCart",
-            "label": "Enable Add To Cart",
-            "default": false
-        },
-        {
-            "type": "checkbox",
-            "id": "showTitle",
-            "label": "Show Title",
-            "default": true
-        },
-        {
-            "type": "image_picker",
-            "id": "bgImage",
-            "label": "Banner Image"
-        },
-        {
-            "id": "bannerHeading",
-            "label": "Banner Heading",
-            "type": "text"
-        },
-        {
-            "type": "checkbox",
-            "id": "enableFillters",
-            "label": "Enable Filters",
-            "default": true
-        },
-        {
-            "type": "select",
-            "id": "productBox",
-            "label": "Items in row",
-            "options": [
-                {
-                    "value": "2",
-                    "label": "2"
-                },
-                {
-                    "value": "3",
-                    "label": "3"
-                },
-                {
-                    "value": "4",
-                    "label": "4"
-                }
-            ]
-        },
-        {
-            "type": "select",
-            "id": "paginateType",
-            "label": "Paginate Type",
-            "options": [
-                {
-                    "value": "paginate",
-                    "label": "Paginate"
-                },
-                {
-                    "value": "loadMore",
-                    "label": "Load More"
-                },
-                {
-                    "value": "infinity",
-                    "label": "Infinity"
-                }
-            ]
-        }
-    ]
-}
+    {
+        "name": "Collection Section",
+        "settings": [
+            {
+                "type": "checkbox",
+                "id": "showBanner",
+                "label": "Show Banner",
+                "default": false
+            },
+            {
+                "type": "checkbox",
+                "id": "enableAddToCart",
+                "label": "Enable Add To Cart",
+                "default": false
+            },
+            {
+                "type": "checkbox",
+                "id": "showTitle",
+                "label": "Show Title",
+                "default": true
+            },
+            {
+                "type": "image_picker",
+                "id": "bgImage",
+                "label": "Banner Image"
+            },
+            {
+                "id": "bannerHeading",
+                "label": "Banner Heading",
+                "type": "text"
+            },
+            {
+                "type": "checkbox",
+                "id": "enableFillters",
+                "label": "Enable Filters",
+                "default": true
+            },
+            {
+                "type": "select",
+                "id": "productBox",
+                "label": "Items in row",
+                "options": [
+                    {
+                        "value": "2",
+                        "label": "2"
+                    },
+                    {
+                        "value": "3",
+                        "label": "3"
+                    },
+                    {
+                        "value": "4",
+                        "label": "4"
+                    }
+                ]
+            },
+            {
+                "type": "select",
+                "id": "paginateType",
+                "label": "Paginate Type",
+                "options": [
+                    {
+                        "value": "paginate",
+                        "label": "Paginate"
+                    },
+                    {
+                        "value": "loadMore",
+                        "label": "Load More"
+                    },
+                    {
+                        "value": "infinity",
+                        "label": "Infinity"
+                    }
+                ]
+            }
+        ]
+    }
 {% endschema %}
 
 {% stylesheet %}
-form.filter-form {
-    display: grid;
-    gap: 30px;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    justify-content: space-between;
-}
-label {
-    position: relative;
-}
-input:disabled + label {
-    opacity: .5;
-}
-label::before {
-    border: 1px solid currentColor;
-    content: '';
-    display: inline-block;
-    height: 0.5em;
-    margin: 0 0.25em 0 0;
-    vertical-align: middle;
-    width: 0.5em;
-}
-input:checked + label::before {
-    background-color: currentColor
-}
+    form.filter-form {
+        display: grid;
+        gap: 30px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        justify-content: space-between;
+    }
+    label {
+        position: relative;
+    }
+    input:disabled + label {
+        opacity: .5;
+    }
+    label::before {
+        border: 1px solid currentColor;
+        content: '';
+        display: inline-block;
+        height: 0.5em;
+        margin: 0 0.25em 0 0;
+        vertical-align: middle;
+        width: 0.5em;
+    }
+    input:checked + label::before {
+        background-color: currentColor
+    }
 
-.productOption {display: flex;justify-content: center;gap: 10px;flex-wrap: wrap;}
+    .productOption {display: flex;justify-content: center;gap: 10px;flex-wrap: wrap;}
 
-.productOption + .productOption {margin-top: 15px;}
+    .productOption + .productOption {margin-top: 15px;}
 
-.productValue {flex: 0 0 auto;}
+    .productValue {flex: 0 0 auto;}
 
-.productValue input {display: none;}
+    .productValue input {display: none;}
 
-.productValue label {border: 1px solid currentColor;padding: .25em .5em;}
+    .productValue label {border: 1px solid currentColor;padding: .25em .5em;}
 
-.productValue input:checked + label {background-color: #000000;color: #ffffff;}
+    .productValue input:checked + label {background-color: #000000;color: #ffffff;}
 
-.siteBtn[disabled] span:first-child,
-.siteBtn:not([disabled]) span:last-child,
-.productValue label::before {display: none;}
+    .siteBtn[disabled] span:first-child,
+    .siteBtn:not([disabled]) span:last-child,
+    .productValue label::before {display: none;}
 {% endstylesheet %}
 
 {% if section.settings.paginateType == 'infinity' or section.settings.paginateType == 'loadMore' %}
@@ -309,11 +299,13 @@ input:checked + label::before {
         }
 
         {% if section.settings.paginateType == 'infinity' %}
-            window.addEventListener('scroll', function() {
-                if((window.innerHeight + window.scrollY) > loadMoreButton.offsetTop) {
-                    loadMoreButton.click();
-                };
-            })
+            if(loadMoreButton) {
+                window.addEventListener('scroll', function() {
+                    if((window.innerHeight + window.scrollY) > loadMoreButton.offsetTop) {
+                        loadMoreButton.click();
+                    };
+                })
+            }
         {% endif %}
     </script>
 {% endif %}
@@ -352,6 +344,17 @@ input:checked + label::before {
             } else {
                 jQuery(this).parents('.productBox').find('.siteBtn').attr('disabled', true)
             }
+        })
+        
+        console.log("{{ request.path }}")
+        jQuery(document).on('change', '.filter-form input, .filter-form select', async function() {
+            const formdata = jQuery(this).parents('form').serialize()
+
+            jQuery(this).parents('form').addClass('formLoading')
+            const req = await fetch(`{{ request.path }}?view=ajax&${ formdata }`)
+            const res = await req.text();
+            jQuery("#collectionContainer").html(res)
+            jQuery(this).parents('form').removeClass('formLoading')
         })
     })
 </script>

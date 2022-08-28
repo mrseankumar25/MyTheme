@@ -61,3 +61,49 @@ a.searchForm svg {
   position: absolute;
   width: 100%;
 }
+
+form.filter-form.formLoading {
+  position: relative;
+}
+
+form.filter-form.formLoading::before,
+form.filter-form.formLoading::after {
+  content: "";
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+form.filter-form.formLoading::before {
+  background-color: rgba(0, 0, 0, .75);
+  height: 100%;
+  width: 100%;
+}
+
+form.filter-form.formLoading > * {
+  position: relative;
+  z-index: 1;
+}
+
+form.filter-form.formLoading::after {
+  animation: rotate 1s infinite linear;
+  border: 5px solid transparent;
+  border-bottom-color: yellow;
+  border-right-color: red;
+  border-top-color: green;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

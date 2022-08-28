@@ -1,5 +1,4 @@
 {
-  "name": "Search Template",
   "sections": {
     "banner": {
       "type": "banner-inner",
@@ -12,7 +11,9 @@
       }
     },
     "main": {
-      "type": "search-template"
+      "type": "search-template",
+      "settings": {
+      }
     }
   },
   "order": [

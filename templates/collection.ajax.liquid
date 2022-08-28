@@ -1,0 +1,95 @@
+{% layout none %}
+
+{% paginate collection.products by 10 %}
+  <div class="row" id="cardContainer">
+    {% for product in collection.products %}
+      {% liquid
+        case section.settings.productBox
+          when "2"
+            assign productBoxSize = 'col-md-6'
+          when "3"
+            assign productBoxSize = 'col-md-4'
+          else
+            assign productBoxSize = 'col-md-3'
+        endcase
+      %}
+      <div class="col {{ productBoxSize }} productBox">
+        <div class="productImgContainer">
+          <a href="{{ product.url | within: collection }}">
+            <div class="productImg" style="background-image: url({{ product.featured_image | product_img_url: "large" }});">
+              {% unless product.available %}
+                <strong>Sold out</strong>
+              {% endunless %}
+            </div>
+          </a>
+        </div>
+
+        <div class="productContentContainer">
+          <div class="productTitle">
+            <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+          </div>
+        </div>
+
+        <div class="productPrice">
+          {% assign rPrice = product.price %}
+          {% assign cPrice = product.compare_at_price %}
+
+          {% if rPrice != cPrice %}
+            {% capture price %}
+            <span class="rPrice">{{ rPrice | money }}</span>
+            <span class="cPrice">{{ cPrice | money }}</span>
+            {% endcapture %}
+          {% else %}
+            {% capture price %}
+            <span class="rPrice">{{ rPrice | money }}</span>
+            {% endcapture %}
+          {% endif %}
+          {{ price }}
+        </div>
+
+        <div class="productForm">
+          {% form "product", product, class: "addToCartForm", data-ajax: settings.cart_type %}
+            <input type="hidden" name="quantity" value="1">
+            {% if product.options_with_values.size > 1 %}
+              {% for product_option in product.options_with_values %}
+                <div class="productOption">
+                  {% for value in product_option.values %}
+                    <div class="productValue">
+                      <input id="option-{{ product_option.name | handleize }}-{{ forloop.index }}-{{ product.id }}" name="{{ product_option.name | handleize }}-{{ product.id }}" type="radio" value="{{ value }}"{% if product_option.selected_value == value %} checked{% endif %}>
+                      <label for="option-{{ product_option.name | handleize }}-{{ forloop.index }}-{{ product.id }}">{{ value }}</label>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+              <select class="hide" name="id">
+                {% for variant in product.variants %}
+                  <option data-p="{{ variant.price | money_with_currency }}" data-img="{{ variant.featured_image | img_url: 'master' }}" value="{{ variant.id }}" data-available="{{ variant.available }}"{% if variant.id == product.selected_or_first_available_variant.id %} selected{% endif %}>{{ variant.title }}</option>
+                {% endfor %}
+              </select>
+            {% else %}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            {% endif %}
+
+            <button class="siteBtn black-btn" type="submit"{% unless product.selected_or_first_available_variant.available %} disabled{% endunless %}>
+              <span>Add To Cart</span>
+              <span>Sold Out</span>
+            </button>
+          {% endform %}
+        </div>
+      </div>
+    {% else %}
+      <p>Opps! Looks like we don't have any product. :(</p>
+    {% endfor %}
+  </div>
+
+  {% if paginate.pages > 1 %}
+    <div class="paginationContainer"{% if section.settings.paginateType == 'infinity' %} style="height: 0;overflow: hidden;"{% endif %}>
+      <input type="hidden" value="{{ paginate.pages }}">
+      {% if section.settings.paginateType == 'infinity' or section.settings.paginateType == 'loadMore' %}
+        <span data-current="2" class="page loadMoreButton">Load More</span>
+      {% else %}
+        {{ paginate | default_pagination }}
+      {% endif %}
+    </div>
+  {% endif %}
+{% endpaginate %}
