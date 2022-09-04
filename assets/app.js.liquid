@@ -130,6 +130,23 @@ theme.addToCartDrawer = async (items) => {
 	jQuery(document).find('.cartPopup').addClass('cartPopupDrawerOpen')
 }
 
+theme.upsell = async (items) => {
+	const req = await fetch('/cart/update.json', {
+		method: "POST",
+		headers: {
+			"Content-type": "application/json"
+		},
+		body: JSON.stringify(items)
+	});
+	const res = await req.json();
+
+	if(res.errors) {
+		theme.getCart(res.errors)
+	} else {
+		return true
+	}
+}
+
 (function($) {
 	/* Preloader */
 	$(window).on('load', function() {
@@ -202,26 +219,44 @@ theme.addToCartDrawer = async (items) => {
 		allowClear: true
 	});
 
-	jQuery(document).on('submit', '.addToCartForm', function(e) {
-			if(jQuery(this).data('ajax') == "notification" || jQuery(this).data('ajax') == "drawer") {
-				e.preventDefault();
-				const formData = {
-					"items": [
-						{
-							"id": jQuery(this).find('[name="id"]').val(),
-							"quantity": jQuery(this).find('input[name="quantity"]').val()
-						}
-					]
+	jQuery(document).on('click', '.paymentConatiner #AddToCart', async function(e) {
+		const upsellForm = {
+			"updates": {}
+		}
+		if(jQuery('.upsellTable').length > 0) {
+			jQuery('.upsellTable tbody input').each(function() {
+				if(jQuery(this).is(":checked")) {
+					upsellForm.updates[jQuery(this).val()] = 1
 				}
+			})
+		}
 
-				if(jQuery(this).data('ajax') == "notification") {
-					theme.addToCart(formData);
-				} else {
-					theme.addToCartDrawer(formData)
-				}
+		const upsellData = await theme.upsell(upsellForm)
+		if(upsellData) {
+			jQuery(this).parents('form').submit()
+		}
+	})
+
+	jQuery(document).on('submit', '.addToCartForm', async function(e) {
+		if(jQuery(this).data('ajax') == "notification" || jQuery(this).data('ajax') == "drawer") {
+			e.preventDefault();
+			const formData = {
+				"items": [
+					{
+						"id": jQuery(this).find('[name="id"]').val(),
+						"quantity": jQuery(this).find('input[name="quantity"]').val()
+					}
+				]
+			}
+
+			if(jQuery(this).data('ajax') == "notification") {
+				theme.addToCart(formData);
 			} else {
-				jQuery(this).submit();
-			};
+				theme.addToCartDrawer(formData)
+			}
+		} else {
+			jQuery(this).submit();
+		};
 	})
 	jQuery(document).on('click', '.cartPopupClose', function() {
 		jQuery(this).parents('.cartPopup').removeClass('cartPopupDrawerOpen')
