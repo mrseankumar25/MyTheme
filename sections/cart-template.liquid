@@ -39,6 +39,7 @@
 						{% endfor %}
 					</tbody>
 				</table>
+              <textarea id="note" name="note">{{ cart.note }}</textarea>
 				<div>
 					<p>sub total : {{ cart.total_price | money }}</p>
 					<button type="submit" class="siteBtn black-btn" name="update">Update</button>

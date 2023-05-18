@@ -1,0 +1,45 @@
+<style>
+  .stickycartContainer {
+    position: sticky;
+    bottom: 0;
+    background-color: #fff;
+    z-index: 999;
+    box-shadow: 0px -4px 8px 0px rgb(0 0 0 / 15%), 0px -8px 16px 0px rgb(0 0 0 / 12%);
+    padding: 1rem;
+  }
+  
+  .stickycartRow {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .stickycartCol:first-child {
+    flex: 1 1 auto;
+  }
+</style>
+
+<div class="stickycartContainer">
+  <div class="stickycartRow">
+    <div class="stickycartCol">
+      {{ product.title }}
+    </div>
+    <div class="stickycartCol">
+      <input type="number" id="stickyCartQuantity" value="1" min="1">
+    </div>
+    <div class="stickycartCol">
+      <button id="stickyCartAddToCart">Add To Cart</button>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  const stickyCartQuantity = document.getElementById('stickyCartQuantity')
+  stickyCartQuantity.addEventListener('input', function() {
+    document.getElementById('Quantity').value = stickyCartQuantity.value
+  })
+
+  const stickyCartAddToCart = document.getElementById('stickyCartAddToCart')
+  stickyCartAddToCart.addEventListener('click', function() {
+    document.getElementById('AddToCart').click()
+  })
+</script>
