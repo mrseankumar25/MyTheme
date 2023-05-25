@@ -1,0 +1,329 @@
+{% assign productSlug = request.path | remove: "/products/" %}
+{% assign product = all_products[productSlug] %}
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign featured_image = current_variant.featured_image | default: product.featured_image %}
+
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div {% if section.settings.galleryType != "gallery" %}class="{% if settings.productGalleryType == "owl" %}mainSlider owl-carousel owl-theme{% else %}slickProductGallery{% endif %}"{% else %}class="productGallery"{% endif %}{% if settings.enableThumbs %} data-thumb-slider{% endif %}>
+        {% for image in product.images %}
+          <div class="thumbnailWrapper" data-id="{{ image.id }}" data-alt="{{ image.alt }}">
+            <div class="imageContainer">
+              <a href="{{ image.src | img_url: 'large' }}" class="lightbox">
+                <img src="{{ image.src | img_url: 'master' }}" alt="{{ image.alt | escape }}">
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if settings.enableThumbs %}
+        <div class="thumbSlider">
+          {% for image in product.images %}
+            <div class="thumbnailWrapper" data-id="{{ image.id }}" data-alt="{{ image.alt }}">
+              <div class="imageContainer">
+                <img src="{{ image.src | img_url: '200x200' }}" alt="{{ image.alt | escape }}" height="{{ image.height }}" width="{{ image.width }}" loading="lazy">
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    <div class="col-12 col-md-6">
+      <h2 class="text-left mb-1">{{ product.title }}</h2>
+      <p class="price mb-1">{{ current_variant.price | money }}</p>
+      <div class="description mb-2">{{ product.description }}</div>
+
+      {% form 'product', product, novalidate: 'novalidate', class: "addToCartForm", data-ajax: settings.cart_type, date-fillter: section.settings.enableFillter %}
+        {% unless product.has_only_default_variant %}
+          <div class="singleSelectorContainer">
+            {% for option in product.options_with_values %}
+              <div class="singleSelectorWrapper">
+                <labe>{{ option.name }}</labe>
+                {% if settings.optionType == 'swatch' %}
+                  <div class="SwatchBoxContainer">
+                    {% for value in option.values %}
+                      <div class="SwatchBox">
+                        <input type="radio" name="{{ option.name | handleize }}" class="singleSelector" id="singleSelector-{{ option.name | handleize }}-{{ forloop.index }}" value="{{ value | escape }}"{% if option.selected_value == value %} checked{% endif %}>
+                        <label for="singleSelector-{{ option.name | handleize }}-{{ forloop.index }}">{{ value | escape }}</label>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <select class="singleSelector" id="singleSelector-{{ forloop.index }}">
+                    {% for value in option.values %}
+                      <option value="{{ value | escape }}"{% if option.selected_value == value %} selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                  </select>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% endunless %}
+        <select name="id" id="productSelect" class="hide">
+          {% for variant in product.variants %}
+            {% if variant.available %}
+              <option data-img="{{ variant.featured_image.id }}" value="{{ variant.id }}" data-available="{{ variant.available }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
+            {% else %}
+              <option disabled="disabled">{{ variant.title }} - sold out</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        {% if section.settings.qtyCheck != true %}<label for="Quantity">quantity</label>{% endif %}
+        <input type="number" id="Quantity" name="quantity" value="1" min="1"{% if section.settings.qtyCheck %} hidden{% endif %}>
+
+        {% if product.metafields.marketing.upsell != blank %}
+          {% assign upsells = product.metafields.marketing.upsell.value %}
+          <table class="upsellTable">
+            <thead>
+              <tr>
+                <th colspan="2">Image</th>
+                <th>info</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for upsell in upsells %}
+                <tr{% unless upsell.available %} class="disabledProduct"{% endunless %}>
+                  <td>
+                    <input type="checkbox" id="input_{{ upsell.id }}" value="{{ upsell.id }}"{% unless upsell.available %} disabled{% endunless %}>
+                    <label class="checkboxLabel" for="input_{{ upsell.id }}"></label>
+                  </td>
+                  <td>
+                    {% if upsell.featured_image.src != blank %}
+                      {{ upsell.featured_image | image_url: width: 150, height: 150 | image_tag: class: "upsellImage" }}
+                    {% else %}
+                      {{ "product-1" | placeholder_svg_tag: "upsellImage" }}
+                    {% endif %}
+                  </td>
+                  <td>
+                    <label for="input_{{ upsell.id }}">
+                      <span>{{ upsell.title }}</span>
+                      <small>{{ upsell.price | money }}</small>
+                    </label>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+        <div class="paymentConatiner">
+          <button type="submit" name="add" id="AddToCart" class="siteBtn black-btn"{% unless product.selected_or_first_available_variant.available %} disabled{% endunless %}>{{ 'products.product.add_to_cart' | t }}</button>
+          {% if section.settings.dyamincButtons %}{{ form | payment_button }}{% endif %}
+        </div>
+      {% endform %}
+
+      {% assign tabSize = product.metafields.tabs | size %}
+      {% if tabSize > 0 %}
+        <div class="tabsContainer">
+          <ul class="tabsHeader">
+            {% for tab in product.metafields.tabs %}
+              <li class="tabTitle{% if forloop.index == 1 %} active{% endif %}">{{ tab[0] | replace: "_", " " | camelcase }}</li>
+            {% endfor %}
+          </ul>
+
+          <div class="tabsBody">
+            {% for tab in product.metafields.tabs %}
+              <div class="tabContant{% if forloop.index == 1 %} active{% endif %}">{{ tab[1] }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Product Page",
+    "settings": [
+      {
+        "type": "select",
+        "id": "galleryType",
+        "label": "Gallery Type",
+        "options": [
+          {
+            "value": "gallery",
+            "label": "Gallery"
+          },
+          {
+            "value": "slider",
+            "label": "Slider"
+          }
+        ],
+        "default": "gallery"
+      },
+      {
+        "id": "enableFillter",
+        "label": "Enable Fillter",
+        "type": "checkbox"
+      },
+      {
+        "type": "header",
+        "content": "Hide Or Show content"
+      },
+      {
+        "type": "checkbox",
+        "id": "qtyCheck",
+        "label": "Hide Quantity"
+      },
+      {
+        "type": "checkbox",
+        "id": "dyamincButtons",
+        "label": "Show Dynamic Buttons"
+      }
+    ]
+  }
+{% endschema %}
+
+{% style %}
+  .tabsHeader {
+    border: 2px solid;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1em 0 0 0;
+  }
+  .tabTitle {
+    border: 1px solid;
+    flex: 1 1 auto;
+    margin: 0;
+    padding: .5em .75em;
+    text-align: center;
+  }
+  .tabContant {
+    display: none;
+  }
+  .tabContant.active {
+    display: block;
+  }
+  .thumbSlider .imageContainer {
+    padding: 0 5px;
+  }
+  .thumbSlider .imageContainer img {
+    height: auto;
+  }
+  .imageContainer img {
+    width: 100%;
+  }
+  .upsellTable {
+    width: 100%;
+  }
+  .upsellTable tr + tr td {
+    border-top: 1px solid #c9c9c9;
+  }
+  .upsellTable td, th {
+    padding: .5em .5em;
+  }
+  .upsellTable label span {
+    display: block;
+  }
+  .checkboxLabel::before {
+    border: 1px solid currentColor;
+    content: '';
+    display: inline-block;
+    height: 0.5em;
+    margin: 0 0.25em 0 0;
+    vertical-align: middle;
+    width: 0.5em;
+  }
+  input:checked + .checkboxLabel::before {
+    background-color: currentColor
+  }
+  .disabledProduct {
+    opacity: .75;
+  }
+  .disabledProduct .checkboxLabel::before {
+    background-color: currentColor;
+  }
+  .disabledProduct span, .disabledProduct small {
+    text-decoration: line-through;
+  }
+{% endstyle %}
+
+{% javascript %}
+  jQuery(document).ready(function() {
+    const slider =  jQuery('.mainSlider').owlCarousel({
+      dots: true,
+      items: 1,
+      margin: 0,
+      nav: false,
+    });
+    jQuery('.slickProductGallery').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      arrows: false,
+      fade: true,
+      asNavFor: '.thumbSlider'
+    });
+    jQuery('.thumbSlider').slick({
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      asNavFor: '.slickProductGallery',
+      dots: true,
+      centerMode: true,
+      focusOnSelect: true
+    });
+  
+    $('.singleSelector').on('change', function() {
+      let variantName = '';
+      let variantValue = jQuery(this).val();
+      let productStatus = false;
+      $('.singleSelectorWrapper').each(function(i) {
+        const tagname = $(this).find('.singleSelector')[0].nodeName
+        if(tagname == "SELECT") {
+          variantName += (i != 0 ? ' / ' : '') +  $(this).find('.singleSelector').val();
+        } else if(tagname == "INPUT") {
+          $(this).find('.singleSelector').each(function() {
+            if($(this).is(':checked')) {
+              variantName += (i != 0 ? ' / ' : '') +  $(this).val();
+            }
+          })
+        }
+      })
+
+      $('#productSelect option').each(function() {
+        if($(this).text().includes(variantName)) {
+          productStatus = true;
+          const variantPrice = jQuery(this).text().split(" - ")[1]
+          const mediaId = jQuery(this).data('img');
+          const slideIndex = jQuery(`.thumbnailWrapper[data-id="${ mediaId }"]`).parent().index()
+          $(this).parent().val($(this).val())
+          if(!$(this).data('available')) {
+            productStatus = false;
+          }
+          let newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?variant=' + $(this).val()
+          window.history.pushState({path: newUrl}, '', newUrl)
+
+          $('.slickProductGallery').slick('slickUnfilter');
+          $('.thumbSlider').slick('slickUnfilter');
+
+          if(jQuery(this).parents('form').attr('date-fillter') == 'true') {
+            if(slider.length > 0) slider.owlcarousel2_filter(`[data-alt="${ variantValue }"]`)
+            $('.slickProductGallery').slick('slickFilter', `[data-alt="${ variantValue }"]`);
+            $('.thumbSlider').slick('slickFilter', `[data-alt="${ variantValue }"]`);
+          } else {
+            jQuery('.mainSlider').trigger('to.owl.carousel', slideIndex)
+          }
+
+          if(variantPrice != '') {
+            jQuery(this).parents('.shopify-section').find(".price").text(variantPrice)
+          }
+        }
+      })
+  
+      if(productStatus) {
+        $('#AddToCart').text("Add To Cart").removeAttr('disabled')
+      } else {
+        $('#AddToCart').text("Sold Out").attr('disabled', 'disabled')
+      }
+  
+      $('.tabsHeader .tabTitle').on('click', function() {
+        $(this).siblings().removeClass('active');
+        $(this).parents('.tabsContainer').find('.tabsBody .tabContant').removeClass('active');
+  
+        $(this).addClass('active');
+        $(this).parents('.tabsContainer').find('.tabsBody .tabContant').eq($(this).index()).addClass('active');
+      })
+    })
+  });
+{% endjavascript %}

@@ -124,6 +124,8 @@
                                     <span>Add To Cart</span>
                                     <span>Sold Out</span>
                                 </button>
+    
+                                <a href="#" class="siteBtn black-btn quickView" data-slug="{{ product.handle }}">Quick View</a>
                             {% endform %}
                         </div>
                     </div>
@@ -143,6 +145,14 @@
                 </div>
             {% endif %}
         {% endpaginate %}
+    </div>
+</div>
+
+<div class="quickViewModle">
+    <div class="modleInner">
+        <div class="modelClose">&#x1F5D9</div>
+        <div class="modleView">
+        </div>
     </div>
 </div>
 
@@ -267,6 +277,36 @@
     .siteBtn[disabled] span:first-child,
     .siteBtn:not([disabled]) span:last-child,
     .productValue label::before {display: none;}
+    .quickViewModle {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 999;
+        background-color: rgba(0, 0, 0, .5);
+    }
+    .modleInner {
+        display: grid;
+        place-items: center;
+        height: 100%;
+    }
+    .modleView {
+        max-width: 1550px;
+        width: 100%;
+        background-color: #fff;
+        margin: 15px;
+        padding: 15px;
+    }
+    .modelClose {
+        font-size: 2rem;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        color: #fff;
+        cursor: pointer;
+    }
 {% endstylesheet %}
 
 {% if section.settings.paginateType == 'infinity' or section.settings.paginateType == 'loadMore' %}
@@ -345,8 +385,7 @@
                 jQuery(this).parents('.productBox').find('.siteBtn').attr('disabled', true)
             }
         })
-        
-        console.log("{{ request.path }}")
+
         jQuery(document).on('change', '.filter-form input, .filter-form select', async function() {
             const formdata = jQuery(this).parents('form').serialize()
 
@@ -355,6 +394,22 @@
             const res = await req.text();
             jQuery("#collectionContainer").html(res)
             jQuery(this).parents('form').removeClass('formLoading')
+        })
+
+        jQuery(document).on("click", ".quickView", async function(e) {
+            e.preventDefault()
+            const slug = jQuery(this).data("slug")
+            const proURI = `/products/${ slug }?view=ajax`
+
+            const req = await fetch(proURI)
+            const res = await req.text()
+            jQuery(".modleView").html(res)
+            jQuery(".quickViewModle").show()
+        })
+
+        jQuery(document).on("click", ".modelClose", function(e) {
+            jQuery(".modleView").html('')
+            jQuery(".quickViewModle").hide()
         })
     })
 </script>
