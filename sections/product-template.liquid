@@ -84,40 +84,6 @@
         {% if section.settings.qtyCheck != true %}<label for="Quantity">quantity</label>{% endif %}
         <input type="number" id="Quantity" name="quantity" value="1" min="1"{% if section.settings.qtyCheck %} hidden{% endif %}>
 
-        {% if product.metafields.marketing.upsell != blank %}
-          {% assign upsells = product.metafields.marketing.upsell.value %}
-          <table class="upsellTable">
-            <thead>
-              <tr>
-                <th colspan="2">Image</th>
-                <th>info</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for upsell in upsells %}
-                <tr{% unless upsell.available %} class="disabledProduct"{% endunless %}>
-                  <td>
-                    <input type="checkbox" id="input_{{ upsell.id }}" value="{{ upsell.id }}"{% unless upsell.available %} disabled{% endunless %}>
-                    <label class="checkboxLabel" for="input_{{ upsell.id }}"></label>
-                  </td>
-                  <td>
-                    {% if upsell.featured_image.src != blank %}
-                      {{ upsell.featured_image | image_url: width: 150, height: 150 | image_tag: class: "upsellImage" }}
-                    {% else %}
-                      {{ "product-1" | placeholder_svg_tag: "upsellImage" }}
-                    {% endif %}
-                  </td>
-                  <td>
-                    <label for="input_{{ upsell.id }}">
-                      <span>{{ upsell.title }}</span>
-                      <small>{{ upsell.price | money }}</small>
-                    </label>
-                  </td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        {% endif %}
         <div class="paymentConatiner">
           <button type="submit" name="add" id="AddToCart" class="siteBtn black-btn"{% unless product.selected_or_first_available_variant.available %} disabled{% endunless %}>{{ 'products.product.add_to_cart' | t }}</button>
           {% if section.settings.dyamincButtons %}{{ form | payment_button }}{% endif %}
@@ -216,37 +182,44 @@
   .imageContainer img {
     width: 100%;
   }
-  .upsellTable {
+
+  .upselltable {
     width: 100%;
   }
-  .upsellTable tr + tr td {
-    border-top: 1px solid #c9c9c9;
+
+  .upselltable th, .upselltable td {
+    padding: .5em;
   }
-  .upsellTable td, th {
-    padding: .5em .5em;
-  }
-  .upsellTable label span {
+
+  .upselltable tr + tr td {border-top: 1px solid #c9c9c9;}
+
+  .upselltable span {
     display: block;
   }
+
+  .checkboxLabel {
+    position: relative;
+  }
+
   .checkboxLabel::before {
     border: 1px solid currentColor;
-    content: '';
+    content: "";
     display: inline-block;
-    height: 0.5em;
-    margin: 0 0.25em 0 0;
+    height: .5em;
     vertical-align: middle;
-    width: 0.5em;
+    width: .5em;
   }
-  input:checked + .checkboxLabel::before {
-    background-color: currentColor
-  }
-  .disabledProduct {
-    opacity: .75;
-  }
-  .disabledProduct .checkboxLabel::before {
+
+  .disabledProduct .checkboxLabel::before,
+  input:checked ~ .checkboxLabel::before {
     background-color: currentColor;
   }
-  .disabledProduct span, .disabledProduct small {
+
+  .disabledProduct {
+    opacity: 0.75;
+  }
+  .disabledProduct span,
+  .disabledProduct small {
     text-decoration: line-through;
   }
 {% endstyle %}
